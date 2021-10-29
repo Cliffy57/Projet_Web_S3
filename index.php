@@ -3,7 +3,7 @@
 
 session_start();
 $_SESSION['url'] ='index.php';
-require_once('connexion.php');
+require_once('config.php');
 // si l'application utilise exclusivement les requêtes préparées,
 // alors aucune injection SQL n'est possible
 // donc toutes les $_POST, $_GET, etc insérées dans execute() ou bindValue/bindPrepare

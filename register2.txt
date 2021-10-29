@@ -1,0 +1,244 @@
+<?php
+require_once "config.php";
+// define variables and set to empty values
+$nomErr = $prenomErr = $pseudoErr = $mailErr = $mdpErr = "";
+$nom = $prenom = $pseudo = $mail = $mdp = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (empty(trim($_POST["nom"]))) {
+    $nomErr = "Precisez votre nom.";
+  } elseif (!preg_match("/^[a-zA-Z-' ]*$/", $nom)) {
+    $nomErr = "Seul les lettres et les espaces sont toleres";
+  } else {
+    // Prepare a select statement
+    $sql = "SELECT idredacteur FROM redacteur WHERE nom = ?";
+
+    if ($stmt = mysqli_prepare($link, $sql)) {
+      // Bind variables to the prepared statement as parameters
+      mysqli_stmt_bind_param($stmt, "s", $param_nom);
+
+      // Set parameters
+      $param_nom = trim($_POST["nom"]);
+
+      // Attempt to execute the prepared statement
+      if (mysqli_stmt_execute($stmt)) {
+        /* store result */
+        mysqli_stmt_store_result($stmt);
+
+        if (mysqli_stmt_num_rows($stmt) == 1) {
+          $nomErr = "Ce nom est déjà pris.";
+        } else {
+          $nom = trim($_POST["nom"]);
+        }
+      } else {
+        echo "nom Oops! Something went wrong. Please try again later.";
+      }
+
+      // Close statement
+      mysqli_stmt_close($stmt);
+    }
+  }
+  // Validate prenom
+  if (empty(trim($_POST["prenom"]))) {
+    $prenomErr = "Precisez votre prenom.";
+  } elseif (!preg_match("/^[a-zA-Z-' ]*$/", $prenom)) {
+    $prenomErr = "Seul les lettres et les espaces sont toleres";
+  } else {
+    // Prepare a select statement
+    $sql = "SELECT idredacteur FROM redacteur WHERE prenom = ?";
+
+    if ($stmt = mysqli_prepare($link, $sql)) {
+      // Bind variables to the prepared statement as parameters
+      mysqli_stmt_bind_param($stmt, "s", $param_prenom);
+
+      // Set parameters
+      $param_prenom = trim($_POST["prenom"]);
+
+      // Attempt to execute the prepared statement
+      if (mysqli_stmt_execute($stmt)) {
+        /* store result */
+        mysqli_stmt_store_result($stmt);
+
+        if (mysqli_stmt_num_rows($stmt) == 1) {
+          $prenomErr = "Ce prenom est déjà pris.";
+        } else {
+          $prenom = trim($_POST["prenom"]);
+        }
+      } else {
+        echo "prenom Oops! Something went wrong. Please try again later.";
+      }
+
+      // Close statement
+      mysqli_stmt_close($stmt);
+    }
+  }
+  // Validate pseudo
+  if (empty(trim($_POST["pseudo"]))) {
+    $pseudoErr = "Precisez votre pseudo.";
+  } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["pseudo"]))) {
+    $pseudoErr = "Le pseudo ne peut contenir que des lettres, des chiffres et des underscores.";
+  } else {
+    // Prepare a select statement
+    $sql = "SELECT idredacteur FROM redacteur WHERE pseudo = ?";
+
+    if ($stmt = mysqli_prepare($link, $sql)) {
+      // Bind variables to the prepared statement as parameters
+      mysqli_stmt_bind_param($stmt, "s", $pseudo);
+
+      // Set parameters
+      $param_pseudo = trim($_POST["pseudo"]);
+
+      // Attempt to execute the prepared statement
+      if (mysqli_stmt_execute($stmt)) {
+        /* store result */
+        mysqli_stmt_store_result($stmt);
+
+        if (mysqli_stmt_num_rows($stmt) == 1) {
+          $pseudoErr = "Ce Pseudo est deja pris.";
+        } else {
+          $pseudo = trim($_POST["pseudo"]);
+        }
+      } else {
+        echo "pseudo Oops! Something went wrong. Please try again later.";
+      }
+
+      // Close statement
+      mysqli_stmt_close($stmt);
+    }
+  }
+  // Validate email
+  if (empty(trim($_POST["mail"]))) {
+    $mailErr = "Precisez votre mail.";
+  } elseif (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+    // check if e-mail address is well-formed
+    $mailErr = "Mauvais format d'adresse mail";
+  } else {
+    // Prepare a select statement
+    $sql = "SELECT idredacteur FROM redacteur WHERE mail = ?";
+
+    if ($stmt = mysqli_prepare($link, $sql)) {
+      // Bind variables to the prepared statement as parameters
+      mysqli_stmt_bind_param($stmt, "s", $mail);
+
+      // Set parameters
+      $param_mail = trim($_POST["mail"]);
+
+      // Attempt to execute the prepared statement
+      if (mysqli_stmt_execute($stmt)) {
+        /* store result */
+        mysqli_stmt_store_result($stmt);
+
+        if (mysqli_stmt_num_rows($stmt) == 1) {
+          $mailErr = "Cette adresse e-mail est deja prise.";
+        } else {
+          $mail = trim($_POST["mail"]);
+        }
+      } else {
+        echo "mail Oops! Something went wrong. Please try again later.";
+      }
+
+      // Close statement
+      mysqli_stmt_close($stmt);
+    }
+  }
+  // Validate password
+  if (empty(trim($_POST["mdp"]))) {
+    $mdpErr = "Entrer un mot de passe.";
+  } elseif (strlen(trim($_POST["mdp"])) < 6) {
+    $mdpErr = "Le mot de passe doit comporter au moins 6 caractères.";
+  } else {
+    $mdp = trim($_POST["mdp"]);
+  }
+
+  // Check input errors before inserting in database
+  if (empty($nomErr) && empty($prenomErr) && empty($pseudoErr) && empty($mailErr) && empty($mdpErr)) {
+
+    // Prepare an insert statement
+    $sql = "INSERT INTO redacteur (nom,prenom,adressemail,motdepasse,pseudo) VALUES (?, ?, ?, ?, ?)";
+
+    if ($stmt = mysqli_prepare($link, $sql)) {
+      // Bind variables to the prepared statement as parameters
+      mysqli_stmt_bind_param($stmt, "sssss", $param_nom, $param_prenom, $param_mail, $param_mdp, $param_pseudo);
+
+      // Set parameters
+      $param_nom = $nom;
+      $param_prenom = $prenom;
+      $param_pseudo = $pseudo;
+      $param_mail = $mail;
+      $param_mdp = password_hash($mdp, PASSWORD_DEFAULT); // Creates a password hash
+
+      // Attempt to execute the prepared statement
+      if (mysqli_stmt_execute($stmt)) {
+        // Redirect to login page
+        header("location: login.php");
+      } else {
+        echo "insert Oops! Something went wrong. Please try again later.";
+      }
+
+      // Close statement
+      mysqli_stmt_close($stmt);
+    }
+  }
+
+  // Close connection
+  mysqli_close($link);
+}
+////////////////////////////////
+$insert_stmt = $objPdo->prepare("INSERT INTO redacteur(nom, prenom, adressemail, motdepasse, pseudo) VALUES (:nom, :prenom, :adressemail, :mdp, :pseudo)");
+  $insert_stmt->bindValue("nom", $nom,PDO::PARAM_STR);
+  $insert_stmt->bindValue("nom", $nom,PDO::PARAM_STR);
+  $insert_stmt->bindValue("nom", $nom,PDO::PARAM_STR);
+  $insert_stmt->bindValue("nom", $nom,PDO::PARAM_STR);
+  $insert_stmt->bindValue("nom", $nom,PDO::PARAM_STR);
+  $insert_stmt->execute();
+  header("Location: index.php");
+////////////////////////////////
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>S'enregister</title>
+  <style>
+    .error {
+      color: #FF0000;
+    }
+
+    body {
+      font: 14px sans-serif;
+    }
+
+    .wrapper {
+      width: 360px;
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h2>Creation d'un compte de redacteur</h2>
+    <p>Remplissez ce formulaire afin de creer votre compte.</p>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+      Nom: <input type="text" name="nom" value="<?php echo $nom; ?>">
+      <span class="error">* <?php echo $nomErr; ?></span>
+      <br><br>
+      Prenom: <input type="text" name="prenom" value="<?php echo $prenom; ?>">
+      <span class="error">* <?php echo $prenomErr; ?></span>
+      <br><br>
+      Pseudo: <input type="text" name="pseudo" value="<?php echo $pseudo; ?>">
+      <span class="error">* <?php echo $pseudoErr; ?></span>
+      <br><br>
+      E-mail: <input type="text" name="mail" value="<?php echo $mail; ?>">
+      <span class="error">* <?php echo $mailErr; ?></span>
+      <br><br>
+      Mot de Passe: <input type="text" name="mdp" value="<?php echo $mdp; ?>">
+      <span class="error">* <?php echo $mdpErr; ?></span>
+      <br><br>
+      <input type="submit" name="submit" value="S'enregistrer">
+    </form>
+  </div>
+</body>
+
+</html>

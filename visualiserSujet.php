@@ -23,7 +23,7 @@ else
   <dt>Prix unitaire :</dt>
   <dd><?php echo $unarticle->getPrix() ?></dd>
 </dl>
-<form name="achat" action="ajouter.php<?php echo '?ref='.$_GET['ref'] ?>" 
+<form name="achat" action="ajouter.php<?php echo '?ref='.$_GET['ref'] ?>"
 	  method="post">
   <label for="commentaire">Commentaire</label>
   <input id="commentaire" name="commentaire" type="text" />
