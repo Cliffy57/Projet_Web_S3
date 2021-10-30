@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php
+ session_start();require_once "config.php";
+ ?>
 <html>
 <head>
 <meta charset="utf-8">
@@ -6,29 +8,39 @@
 <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-<?php
-include 'sujet.class.php';
-$sujets = unserialize(file_get_contents('data/sujets'));
-if (isset($_GET['ref']))
-{	$unsujet = $sujets[$_GET['ref']];	}
-else
-{	header("location:index.php");		}
-?>
 <h1>Voici le sujet:</h1>
+<div class="sujet">
 <dl>
-  <dt>Référence :</dt>
-  <dd><?php echo $_GET['ref'] ?></dd>
-  <dt>Designation :</dt>
-  <dd><?php echo $unarticle->getDesignation() ?></dd>
-  <dt>Prix unitaire :</dt>
-  <dd><?php echo $unarticle->getPrix() ?></dd>
+  <dt>Titre :</dt>
+  <dd><?php 
+  $result = $objPdo->query('SELECT * FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet='.$_GET["id"].'');
+  while ($row=$result->fetch()){
+    echo $row['datesujet']." __ ".$row['pseudo']." __ ".$row['titresujet'];
+  }
+   ?></dd>
+  <dt>Sujet :</dt>
+  <dd><?php
+   $result = $objPdo->query('SELECT textesujet FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet='.$_GET["id"].'');
+   echo $result->fetch()['textesujet'];
+   ?></dd>
 </dl>
-<form name="achat" action="ajouter.php<?php echo '?ref='.$_GET['ref'] ?>"
-	  method="post">
-  <label for="commentaire">Commentaire</label>
-  <input id="commentaire" name="commentaire" type="text" />
-  <input type="submit" value="Ajouter un commentaire" /> 
-</form>
-<a href="commander.php">Annuler l'achat et retourner à la liste des articles</a>
+</div>
+<h1>Reponse:</h1>
+<div class="reponses">
+<dl>
+  <dt>Commenteur :</dt>
+  <dd><?php 
+  $result = $objPdo->query('SELECT daterep,pseudo FROM redacteur,sujet, reponse WHERE sujet.idsujet=reponse.idreponse AND reponse.idredacteur=redacteur.idredacteur AND idreponse='.$_GET["id"].'');
+  while ($row=$result->fetch()){
+    echo $row['daterep']." __ ".$row['pseudo'];
+  }
+   ?></dd>
+  <dt>Commentaire :</dt>
+  <dd><?php
+   $result = $objPdo->query('SELECT textereponse FROM sujet, reponse WHERE sujet.idredacteur=reponse.idredacteur AND idreponse='.$_GET["id"].'');
+   echo $result->fetch()['textereponse'];
+   ?></dd>
+</dl>
+</div>
 </body>
 </html>
