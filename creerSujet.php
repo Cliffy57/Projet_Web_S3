@@ -19,7 +19,7 @@ else { $valeur['texte'] = trim($_POST['textesujet']); }
   if (count($erreur)==0){
 
     ////////////////////////////////
-    $insert_stmt = $objPdo->prepare('INSERT INTO sujet (idredacteur,titresujet,textesujet,datesujet) VALUES(:idredacteur,:titre,:texte,:currentDate)');
+    $insert_stmt = $objPdo->prepare('INSERT INTO sujet (idredacteur,titresujet,textesujet,datesujet) VALUES(:idredacteur,:titre,:texte,:date)');
     $insert_stmt->bindValue("idredacteur", $_SESSION['id'], PDO::PARAM_STR);
     $insert_stmt->bindValue("titre", $titresujet, PDO::PARAM_STR);
     $insert_stmt->bindValue("texte", $textesujet, PDO::PARAM_STR);
