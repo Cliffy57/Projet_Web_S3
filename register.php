@@ -112,7 +112,7 @@ if (isset($_POST['submit'])) {
       <span class="error">* <?php echo $mdpErr; ?></span>
       <br><br>
       <input type="submit" name="submit" value="S'enregistrer">
-      <button type="button" name="retour" value="Retour">
+      <button type="button" class="create" onclick="document.location.href='index.php'">Retour</button>
     </form>
   </div>
 </body>

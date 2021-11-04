@@ -35,12 +35,12 @@ if (isset($_POST['submit'])) {
     // }
     foreach($statement as $row){
       $idredac = $id;
-      $_SESSION = $idredac;
+      $_SESSION["id"] = $idredac;
     }
 
     
     if (isset($idredac)){
-      $_SESSION['login']='ok';
+      $_SESSION['login']=true;
       header("Location: index.php");
     }
     else{

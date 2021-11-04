@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-$_SESSION['url'] = 'index.php';
 require_once('config.php');
 // si l'application utilise exclusivement les requêtes préparées,
 // alors aucune injection SQL n'est possible
@@ -49,8 +48,24 @@ unset($result);
 <body>
   <h1>Page d'accueil</h1>
   <h2>Liste des sujets</h2>
-  <button type="button" class="authent" onclick="document.location.href='authentification.php'">S'authentifier</button>
-  <button type="button" class="register" onclick="document.location.href='register.php'">S'inscrire</button>
+  <?php
+  $btnClass;
+  $btnHref;
+  $btnTxt;
+  if (isset($_SESSION['login'])) {
+    if ($_SESSION['login'] == true) {
+      
+      echo ('<button type="button" class="create" onclick="document.location.href=\'creerSujet.php\'">Créer un sujet</button>');
+      echo ('<button type="button" class="disconnect" onclick="document.location.href=\'disconnect.php\'">Deconnexion</button>');
+      echo ('<button type="button" class="register" onclick="document.location.href=\'register.php\'">Modifier Compte</button>');
+    }
+  } else {
+    echo ('<button type="button" class="register" onclick="document.location.href=\'register.php\'">S"inscrire</button>');
+    echo ('<button type="button" class="authent" onclick="document.location.href=\'authentification.php\'">Connexion</button>');
+  }
+  ?>
+  <!-- <input type="button"class="authent" onclick="document.location.href='connect.php'">S'authentifier</input> -->
+
   <?php echo ($ch); ?>
 </body>
 
