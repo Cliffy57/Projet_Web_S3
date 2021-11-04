@@ -24,7 +24,6 @@ if (isset($_POST['submit'])) {
     // Set parameters
     $prenom = trim($_POST["prenom"]);
   }
-
   // Validate pseudo
   if (empty(trim($_POST["pseudo"]))) {
     $pseudoErr = "Precisez votre pseudo.";
