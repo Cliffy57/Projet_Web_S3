@@ -1,36 +1,80 @@
 <?php
 session_start();
-if (isset($_POST['user']) && isset($_POST['mdp'])) {
-  $bSoumis = 1;
-  if ($_POST['user'] == 'user1' && $_POST['mdp'] == 'secret') {
-    $_SESSION['login'] = 'ok';
-    if ($_SESSION['url'] != '')
-      header("location: {$_SESSION['url']}");
-    else
-      header("location: index.php");
+require_once "config.php";
+
+// define variables and set to empty values
+$loginErr = $mdpErr= "";
+$login = $mdp= "";
+$idredac;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (empty($_POST["login"])) {
+    $loginErr = "Precisez votre login";
   }
-} else
-  $bSoumis = 0;
+  }
+  if (empty($_POST["mdp"])) {
+    $mdpErr = "Precisez votre mot de passe";
+  }
+
+if (isset($_POST['submit'])) {
+  if (empty($loginErr) && empty($mdpErr)) {
+
+  
+    $query ="
+    SELECT * FROM redacteur
+       WHERE ( pseudo = :username OR adressemail = :username) 
+       AND motdepasse = :mdp";
+
+    $statement = $objPdo->prepare($query);
+    $statement->bindValue(":username", $_POST["login"], PDO::PARAM_STR);
+    $statement->bindValue(":mdp", $_POST["mdp"], PDO::PARAM_STR);
+    $statement->bindColumn(1,$id);
+    $statement->execute();
+    // while ($statement->fetch(PDO::FETCH_BOUND)){
+    //   print $id;
+    // }
+    foreach($statement as $row){
+      $idredac = $id;
+      $_SESSION = $idredac;
+    }
+
+    
+    if (isset($idredac)){
+      $_SESSION['login']='ok';
+      header("Location: index.php");
+    }
+    else{
+      print "Error";
+    }
+    ////////////////////////////////
+  }
+}
 ?>
+<!DOCTYPE HTML>  
 <html>
-
 <head>
-  <title>Authentification</title>
+<style>
+.error {color: #FF0000;}
+</style>
+<title>Connect Account</title>
 </head>
+<body>  
 
-<body> <?php
-        if ($bSoumis == 1)
-          echo '<h3>Désolé, réessayez!</h3>';
-        else
-          echo 'Pour accèder à cette page il est nécessaire de vous identifier!'; ?>
-  <form action="authent.php" method="post">
-    Identifiant:<br />
-    <input type="text" name="user"><br />
-    Mot de passe:<br />
-    <input type="password" name="mdp"><br />
-    <input type="submit" name="" value="Valider">
-  </form>
-  <a href="accueil.php">Retour à la page d'accueil</a><br />
+
+
+<h2>Connexion a un compte de redacteur</h2>
+
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+  Pseudo(ou e-mail): <input type="text" name="login" value="<?php echo $login;?>">
+  <span class="error">* <?php echo $loginErr;?></span>
+  <br><br>
+  Mot de Passe: <input type="text" name="mdp" value="<?php echo $mdp;?>">
+  <span class="error">* <?php echo $mdpErr;?></span>
+  <br><br>
+  <input type="submit" name="submit" value="Se Connecter">  
+</form>
+<button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
 </body>
-
 </html>
+
+

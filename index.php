@@ -49,7 +49,7 @@ unset($result);
 <body>
   <h1>Page d'accueil</h1>
   <h2>Liste des sujets</h2>
-  <button type="button" class="authent" onclick="document.location.href='connect.php'">S'authentifier</button>
+  <button type="button" class="authent" onclick="document.location.href='authentification.php'">S'authentifier</button>
   <button type="button" class="register" onclick="document.location.href='register.php'">S'inscrire</button>
   <?php echo ($ch); ?>
 </body>
