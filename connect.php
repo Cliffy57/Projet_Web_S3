@@ -55,6 +55,7 @@ if (isset($_POST['submit'])) {
   <br><br>
   <input type="submit" name="submit" value="Se Connecter">  
 </form>
+<button type="button" class="exite" onclick="document.location.href='index.php'">Retour</button>
 </body>
 </html>
 <!--  -->
