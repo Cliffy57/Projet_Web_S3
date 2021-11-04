@@ -30,7 +30,7 @@
 <dl>
   <dt>Commenteur :</dt>
   <dd><?php 
-  $result = $objPdo->query('SELECT daterep,pseudo FROM redacteur,sujet, reponse WHERE sujet.idsujet=reponse.idreponse AND reponse.idredacteur=redacteur.idredacteur AND idreponse='.$_GET["id"].'');
+  $result = $objPdo->query('SELECT DATE_FORMAT(daterep, "%w %e %Y") AS daterep,pseudo FROM redacteur,sujet, reponse WHERE sujet.idsujet=reponse.idreponse AND reponse.idredacteur=redacteur.idredacteur AND idreponse='.$_GET["id"].'');
   while ($row=$result->fetch()){
     echo $row['daterep']." __ ".$row['pseudo'];
   }

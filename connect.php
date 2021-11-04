@@ -1,17 +1,11 @@
-<!DOCTYPE HTML>  
-<html>
-<head>
-<style>
-.error {color: #FF0000;}
-</style>
-<title>Connect Account</title>
-</head>
-<body>  
-
 <?php
+session_start();
+require_once "config.php";
+
 // define variables and set to empty values
 $loginErr = $mdpErr= "";
 $login = $mdp= "";
+$idredac;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["login"])) {
@@ -25,29 +19,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if (isset($_POST['submit'])) {
   if (empty($loginErr) && empty($mdpErr)) {
 
-    $login=$_REQUEST['login'];
-    $query = "
-    SET @username = :username
+  
+    $query ="
     SELECT * FROM redacteur
-       WHERE ( username = @username OR email = @username) 
-       AND mdp = :mdp
-";
+       WHERE ( pseudo = :username OR adressemail = :username) 
+       AND motdepasse = :mdp";
 
-    $statement = $pdoObject->prepare($query);
-    $statement->bindValue(":username", $login, PDO::PARAM_STR);
-    $statement->bindValue(":mdp", $mdp, PDO::PARAM_STR);
+    $statement = $objPdo->prepare($query);
+    $statement->bindValue(":username", $_POST["login"], PDO::PARAM_STR);
+    $statement->bindValue(":mdp", $_POST["mdp"], PDO::PARAM_STR);
+    $statement->bindColumn(1,$id);
     $statement->execute();
+    // while ($statement->fetch(PDO::FETCH_BOUND)){
+    //   print $id;
+    // }
+    foreach($statement as $row){
+      $idredac = $id;
+    }
+
     
-    header("Location: index.php");
+    if (isset($idredac)){
+      $_SESSION['login']='ok';
+      header("Location: index.php");
+    }
+    else{
+      print "Error";
+    }
     ////////////////////////////////
   }
 }
 ?>
+<!DOCTYPE HTML>  
+<html>
+<head>
+<style>
+.error {color: #FF0000;}
+</style>
+<title>Connect Account</title>
+</head>
+<body>  
+
+
 
 <h2>Connexion a un compte de redacteur</h2>
 
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-  Pseudo(ou e-mail): <input type="text" name="lgin" value="<?php echo $login;?>">
+  Pseudo(ou e-mail): <input type="text" name="login" value="<?php echo $login;?>">
   <span class="error">* <?php echo $loginErr;?></span>
   <br><br>
   Mot de Passe: <input type="text" name="mdp" value="<?php echo $mdp;?>">
@@ -55,8 +72,8 @@ if (isset($_POST['submit'])) {
   <br><br>
   <input type="submit" name="submit" value="Se Connecter">  
 </form>
-<button type="button" class="exite" onclick="document.location.href='index.php'">Retour</button>
+<button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
 </body>
 </html>
-<!--  -->
+
 
