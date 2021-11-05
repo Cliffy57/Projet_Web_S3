@@ -42,35 +42,43 @@ require_once "config.php";
       <dd><?php
           $result = $objPdo->query('SELECT textereponse FROM sujet, reponse WHERE sujet.idredacteur=reponse.idredacteur AND idreponse=' . $_GET["id"] . '');
           echo $result->fetch()['textereponse'];
+          //jai aussi mis textereponse plus bas
           ?></dd>
     </dl>
     <?php
+    require_once "config.php";
     if (isset($_SESSION['login'])) {
       if ($_SESSION['login'] == true) {
 
-        $erreur = array();
-        $valeur = array();
-        $valeur["texte"] = "";
-        $erreur["texte"] = "";
+        $textereponse=$textereponseErr="";
         if (isset($_POST['submit'])) {
 
-          if (!isset($_POST['textecom']) or strlen(trim($_POST['textecom'])) == 0) {
-            $erreur['texte'] = 'saisie obligatoire du texte';
-          } else {
-            $valeur['texte'] = trim($_POST['textecom']);
+          if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (empty(trim($_POST["textereponse"]))) {
+              $textereponseErr = "Precisez le titre de votre Commentaire.";
+            } elseif (!preg_match("/^[a-zA-Z-' ]*$/", $textereponse)) {
+              $textereponseErr = "Seul les lettres et les espaces sont toleres";
+            } else {
+              // Set parameters
+              $textereponse = trim($_POST["textereponse"]);
+            }
           }
-
+        
+        
           // Check input errors before inserting in database
-          if (count($erreur) == 0) {
-
+          if (empty($textereponseErr)) {
+        
             ////////////////////////////////
-            $insert_stmt = $objPdo->prepare('INSERT INTO reponse (idsujet,idredacteur,daterep,textereponse) VALUES(:idsujet,idredacteur,:currentDate,:texte)');
-            $insert_stmt->bindValue("idsujet", $_GET['id'], PDO::PARAM_STR);
+            $insert_stmt = $objPdo->prepare('INSERT INTO reponse (idredacteur,daterep,textereponse) VALUES(:idredacteur,:daterep,:textereponse)');
             $insert_stmt->bindValue("idredacteur", $_SESSION['id'], PDO::PARAM_STR);
-            $insert_stmt->bindValue("texte", $_POST['textecom'], PDO::PARAM_STR);
-            $insert_stmt->bindValue("currentDate", time(), PDO::PARAM_STR);
+            $insert_stmt->bindValue("textereponse", $textereponse, PDO::PARAM_STR);
+            $insert_stmt->bindValue("daterep", date('Y-m-d H:i:s'), PDO::PARAM_STR);
             $insert_stmt->execute();
             header("Location: index.php");
+            ////////////////////////////////
+          } else {
+            echo "Erreur lors de la creation du commentaire !";
+          }
             ////////////////////////////////
           }
           
@@ -84,7 +92,7 @@ require_once "config.php";
           <input type="submit" name="comment" value="Commenter">
         </form>');
       }
-    }
+    
     
     ?>
     <button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>

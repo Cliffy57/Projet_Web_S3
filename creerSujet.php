@@ -5,8 +5,9 @@ require_once "config.php";
 $textesujetErr = $titresujetErr = "";
 $textesujet = $titresujet = "";
 
-echo ($_SESSION["id"]);
-echo (date("Y-m-d"));
+// echo ($_SESSION["id"]);
+// echo (date("Y-m-d"));
+
 if (isset($_POST['submit'])) {
 
 
