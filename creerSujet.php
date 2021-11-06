@@ -75,17 +75,17 @@ if (isset($_POST['submit'])) {
 <body>
   <div class="wrapper">
     <h2>Creation d'un Sujet</h2>
-    <p>Remplissez ce formulaire afin de creer votre compte.</p>
+    <p>Remplissez ce formulaire afin de creer votre sujet.</p>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
       <div>
         <label>Titre du sujet:</label>
         <input type="text" name="titresujet" value='<?php echo $titresujet; ?>'></input>
-        <span class="erreur"><?php echo $erreur['titre']; ?></span>
+        <span class="erreur"><?php echo $titresujetErr; ?></span>
       </div>
       <div>
         <label>Texte de votre sujet:</label>
         <textarea name="textesujet" maxlength="900" value="<?php echo $textesujet; ?>"></textarea>
-        <span class="erreur"><?php echo $erreur['texte']; ?></span>
+        <span class="erreur"><?php echo $textesujetErr; ?></span>
       </div>
       <input type="submit" name="submit" value="Ajouter le Sujet">
     </form>

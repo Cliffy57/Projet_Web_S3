@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "config.php";
+// echo ($_GET["id"]);
 ?>
 <html>
 
@@ -42,7 +43,7 @@ require_once "config.php";
       <dd><?php
           $result = $objPdo->query('SELECT textereponse FROM sujet, reponse WHERE sujet.idredacteur=reponse.idredacteur AND idreponse=' . $_GET["id"] . '');
           echo $result->fetch()['textereponse'];
-          //jai aussi mis textereponse plus bas
+          //gerer quand ya pas de com
           ?></dd>
     </dl>
     <?php
@@ -50,31 +51,32 @@ require_once "config.php";
     if (isset($_SESSION['login'])) {
       if ($_SESSION['login'] == true) {
 
-        $textereponse=$textereponseErr="";
+        $textecom=$textecomErr="";
         if (isset($_POST['submit'])) {
 
           if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (empty(trim($_POST["textereponse"]))) {
-              $textereponseErr = "Precisez le titre de votre Commentaire.";
-            } elseif (!preg_match("/^[a-zA-Z-' ]*$/", $textereponse)) {
-              $textereponseErr = "Seul les lettres et les espaces sont toleres";
+            if (empty(trim($_POST["textecom"]))) {
+              $textecomErr = "Precisez le contenu de votre Commentaire.";
+            } elseif (!preg_match("/^[a-zA-Z-' ]*$/", $textecom)) {
+              $textecomErr = "Seul les lettres et les espaces sont toleres";
             } else {
               // Set parameters
-              $textereponse = trim($_POST["textereponse"]);
+              $textecom = trim($_POST["textecom"]);
             }
           }
         
         
           // Check input errors before inserting in database
-          if (empty($textereponseErr)) {
+          if (empty($textecomErr)) {
         
             ////////////////////////////////
-            $insert_stmt = $objPdo->prepare('INSERT INTO reponse (idredacteur,daterep,textereponse) VALUES(:idredacteur,:daterep,:textereponse)');
+            $insert_stmt = $objPdo->prepare('INSERT INTO reponse (idsujet,idredacteur,daterep,textereponse) VALUES(:idsujet,:idredacteur,:daterep,:textecom)');
+            $insert_stmt->bindValue("idsujet",$_GET["id"], PDO::PARAM_STR);
             $insert_stmt->bindValue("idredacteur", $_SESSION['id'], PDO::PARAM_STR);
-            $insert_stmt->bindValue("textereponse", $textereponse, PDO::PARAM_STR);
             $insert_stmt->bindValue("daterep", date('Y-m-d H:i:s'), PDO::PARAM_STR);
+            $insert_stmt->bindValue("textecom", $textecom, PDO::PARAM_STR);
             $insert_stmt->execute();
-            header("Location: index.php");
+            header("Location:index.php");
             ////////////////////////////////
           } else {
             echo "Erreur lors de la creation du commentaire !";
@@ -83,13 +85,14 @@ require_once "config.php";
           }
           
         }
-        echo('<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>
+        echo('<form method="post" action="'.$_SERVER['PHP_SELF'].'" >
+
         <div>
                     <label>Texte de votre commentaire:</label>
-                    <textarea name="textesujet" maxlength="400" value="<?php echo $valeur[\'texte\'];?>"></textarea>
-                    <span class="erreur"><?php echo $erreur[\'texte\'] ;?></span>
+                    <textarea name="textecom" maxlength="400" value="<?php echo $textecom;?>"></textarea>
+                    <span class="erreur"><?php echo $textecomErr ;?></span>
                 </div>
-          <input type="submit" name="comment" value="Commenter">
+          <input type="submit" name="submit" value="Commenter">
         </form>');
       }
     
