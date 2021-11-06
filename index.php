@@ -13,7 +13,7 @@ $sujets = array();
 foreach ($result as $row) {
   $sujets[$row['idsujet']] = $row['nb'];
 }
-$req = 'select * from sujet';
+$req = 'select * from sujet order by datesujet DESC ';
 $result = $objPdo->prepare($req);
 $result->execute();
 $ch = '<table border="1">';
