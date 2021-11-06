@@ -31,27 +31,40 @@ require_once "config.php";
   </div>
   <h1>Reponse:</h1>
   <div class="reponses">
-    <dl>
-      <dt>Commenteur :</dt>
-      <dd><?php
-          $result = $objPdo->query('SELECT DATE_FORMAT(daterep, "%w %e %Y") AS daterep,pseudo FROM redacteur,sujet, reponse WHERE sujet.idsujet=reponse.idreponse AND reponse.idredacteur=redacteur.idredacteur AND idreponse=' . $_GET["id"] . '');
-          while ($row = $result->fetch()) {
-            echo $row['daterep'] . " __ " . $row['pseudo'];
-          }
-          ?></dd>
-      <dt>Commentaire :</dt>
-      <dd><?php
-          $result = $objPdo->query('SELECT textereponse FROM sujet, reponse WHERE sujet.idredacteur=reponse.idredacteur AND idreponse=' . $_GET["id"] . '');
-          echo $result->fetch()['textereponse'];
-          //gerer quand ya pas de com
-          ?></dd>
-    </dl>
+    <?php
+    require_once('config.php');
+    $req = 'select idreponse, count(*) as nb from reponse group by idreponse';
+    $result = $objPdo->prepare($req);
+    $result->execute();
+    $sujets = array();
+    foreach ($result as $row) {
+      $sujets[$row['idreponse']] = $row['nb'];
+    }
+    $req = 'select * from reponse,redacteur where idsujet =' . $_GET["id"] . ' and reponse.idredacteur=redacteur.idredacteur order by daterep DESC ';
+    $result = $objPdo->prepare($req);
+    $result->execute();
+    // $reponseur ='select pseudo from redacteur where redacteur.idredacteur=:idredacteur';
+    // $reponseur
+    $ch = '<table border="1">';
+    $ch .= '<tr><th>Auteur</th><th>Date</th><th>Commentaire</th></tr>';
+    foreach ($result as $row) {
+      $ch .= '<tr>';
+      $ch .= '<td>' . $row['pseudo'] . '</td>';
+      $ch .= '<td>' . $row['daterep'] . '</td>';
+      $ch .= '<td>' . $row['textereponse'] . '</td>';
+    }
+    $ch .= '</table>';
+    unset($result);
+    ?>
+    <?php echo ($ch); ?>
+
+    <!-- Commenter -->
     <?php
     require_once "config.php";
     if (isset($_SESSION['login'])) {
       if ($_SESSION['login'] == true) {
 
-        $textecom=$textecomErr="";
+        $textecom = $textecomErr = "";
         if (isset($_POST['submit'])) {
 
           if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -64,14 +77,14 @@ require_once "config.php";
               $textecom = trim($_POST["textecom"]);
             }
           }
-        
-        
+
+
           // Check input errors before inserting in database
           if (empty($textecomErr)) {
-        
+
             ////////////////////////////////
             $insert_stmt = $objPdo->prepare('INSERT INTO reponse (idsujet,idredacteur,daterep,textereponse) VALUES(:idsujet,:idredacteur,:daterep,:textecom)');
-            $insert_stmt->bindValue("idsujet",$_GET["id"], PDO::PARAM_STR);
+            $insert_stmt->bindValue("idsujet", $_GET["id"], PDO::PARAM_STR);
             $insert_stmt->bindValue("idredacteur", $_SESSION['id'], PDO::PARAM_STR);
             $insert_stmt->bindValue("daterep", date('Y-m-d H:i:s'), PDO::PARAM_STR);
             $insert_stmt->bindValue("textecom", $textecom, PDO::PARAM_STR);
@@ -81,22 +94,22 @@ require_once "config.php";
           } else {
             echo "Erreur lors de la creation du commentaire !";
           }
-            ////////////////////////////////
-          }
-          
+          ////////////////////////////////
         }
-        echo('<form method="post" action="'.$_SERVER['PHP_SELF'].'" >
+      }
+      echo ('<form method="post" action="" >
 
         <div>
                     <label>Texte de votre commentaire:</label>
                     <textarea name="textecom" maxlength="400" value="<?php echo $textecom;?>"></textarea>
                     <span class="erreur"><?php echo $textecomErr ;?></span>
                 </div>
+              
           <input type="submit" name="submit" value="Commenter">
         </form>');
-      }
-    
-    
+    }
+
+
     ?>
     <button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
   </div>
