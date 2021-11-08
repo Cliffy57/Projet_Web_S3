@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "config.php";
+include_once('header.php');
 // echo ($_GET["id"]);
 ?>
 <html>
@@ -31,33 +32,6 @@ require_once "config.php";
   </div>
   <h1>Reponse:</h1>
   <div class="reponses">
-    <?php
-    require_once('config.php');
-    $req = 'select idreponse, count(*) as nb from reponse group by idreponse';
-    $result = $objPdo->prepare($req);
-    $result->execute();
-    $sujets = array();
-    foreach ($result as $row) {
-      $sujets[$row['idreponse']] = $row['nb'];
-    }
-    $req = 'select * from reponse,redacteur where idsujet =' . $_GET["id"] . ' and reponse.idredacteur=redacteur.idredacteur order by daterep DESC ';
-    $result = $objPdo->prepare($req);
-    $result->execute();
-    // $reponseur ='select pseudo from redacteur where redacteur.idredacteur=:idredacteur';
-    // $reponseur
-    $ch = '<table border="1">';
-    $ch .= '<tr><th>Auteur</th><th>Date</th><th>Commentaire</th></tr>';
-    foreach ($result as $row) {
-      $ch .= '<tr>';
-      $ch .= '<td>' . $row['pseudo'] . '</td>';
-      $ch .= '<td>' . $row['daterep'] . '</td>';
-      $ch .= '<td>' . $row['textereponse'] . '</td>';
-    }
-    $ch .= '</table>';
-    unset($result);
-    ?>
-    <?php echo ($ch); ?>
-
     <!-- Commenter -->
     <?php
     require_once "config.php";
@@ -111,6 +85,53 @@ require_once "config.php";
 
 
     ?>
+    <!-- Lecture des commentaires -->
+    <?php
+    require_once('config.php');
+    $req = 'select idreponse, count(*) as nb from reponse group by idreponse';
+    $result = $objPdo->prepare($req);
+    $result->execute();
+    $sujets = array();
+    foreach ($result as $row) {
+      $sujets[$row['idreponse']] = $row['nb'];
+    }
+    $req = 'select * from reponse,redacteur where idsujet =' . $_GET["id"] . ' and reponse.idredacteur=redacteur.idredacteur order by daterep DESC ';
+    $result = $objPdo->prepare($req);
+    $result->execute();
+    // $reponseur ='select pseudo from redacteur where redacteur.idredacteur=:idredacteur';
+    // $reponseur
+    $ch = '<table border="1">';
+    $ch .= '<tr><th>Auteur</th><th>Date</th><th>Commentaire</th><th></th></tr>';
+    foreach ($result as $row) {
+      $ch .= '<tr>';
+      $ch .= '<td>' . $row['pseudo'] . '</td>';
+      $ch .= '<td>' . $row['daterep'] . '</td>';
+      $ch .= '<td>' . $row['textereponse'] . '</td>';
+      if (isset($_SESSION['login'])) {
+        if ($_SESSION['login'] == true) {
+          $verif = $objPdo->query('SELECT idredacteur FROM reponse WHERE idredacteur= ' .$_SESSION['id']. ' AND idredacteur='.$row['idredacteur']. ' AND idsujet=' . $_GET["id"] . '');
+          $verif = $objPdo->prepare($req);
+          $verif->execute();
+          if ($verif==true) {
+          $ch .='<td><button type="button" class="create" onclick="document.location.href=\'creerSujet.php\'">Supprimer</button></td>';
+          }
+          echo("resultat requete ");
+          echo($verif->execute());
+          echo(" id de la session ");
+          echo($_SESSION['id']);
+          echo(" id de la ligne du redac ");
+          echo($row['idredacteur']);
+          echo("      ");
+        
+        }
+      }
+      }
+      
+    $ch .= '</table>';
+    unset($result);
+    ?>
+    <?php echo ($ch); ?>
+
     <button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
   </div>
 </body>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "config.php";
+include_once('header.php');
 // define variables and set to empty values
 $textesujetErr = $titresujetErr = "";
 $textesujet = $titresujet = "";

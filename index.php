@@ -2,6 +2,7 @@
 
 session_start();
 require_once('config.php');
+include_once('header.php');
 // si l'application utilise exclusivement les requêtes préparées,
 // alors aucune injection SQL n'est possible
 // donc toutes les $_POST, $_GET, etc insérées dans execute() ou bindValue/bindPrepare
@@ -13,7 +14,7 @@ $sujets = array();
 foreach ($result as $row) {
   $sujets[$row['idsujet']] = $row['nb'];
 }
-$req = 'select * from sujet order by datesujet DESC ';
+$req = 'select * from sujet,redacteur where sujet.idredacteur=redacteur.idredacteur order by datesujet DESC ';
 $result = $objPdo->prepare($req);
 $result->execute();
 $ch = '<table border="1">';
@@ -22,7 +23,7 @@ foreach ($result as $row) {
   $ch .= '<tr>';
   $ch .= '<td>' . $row['titresujet'] . '</td>';
   $ch .= '<td>' . $row['datesujet'] . '</td>';
-  $ch .= '<td>' . $row['idredacteur'] . '</td>';
+  $ch .= '<td>' . $row['pseudo'] . '</td>';
   $ch .= '<td>' . $row['textesujet'] . '</td>';
   if (array_key_exists($row['idsujet'], $sujets)) {
     $lib = 'Visualiser';
