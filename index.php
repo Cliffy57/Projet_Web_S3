@@ -55,13 +55,13 @@ unset($result);
   $btnTxt;
   if (isset($_SESSION['login'])) {
     if ($_SESSION['login'] == true) {
-      
+     
       echo ('<button type="button" class="create" onclick="document.location.href=\'creerSujet.php\'">Créer un sujet</button>');
-      echo ('<button type="button" class="disconnect" onclick="document.location.href=\'disconnect.php\'">Deconnexion</button>');
+      echo ('<button type="button" id="disconnect">Deconnexion</button>');
       echo ('<button type="button" class="register" onclick="document.location.href=\'register.php\'">Modifier Compte</button>');
     }
   } else {
-    echo ('<button type="button" class="register" onclick="document.location.href=\'register.php\'">S"inscrire</button>');
+    echo ('<button type="button" class="register" onclick="document.location.href=\'register.php\'">S\'inscrire</button>');
     echo ('<button type="button" class="authent" onclick="document.location.href=\'authentification.php\'">Connexion</button>');
   }
   ?>
@@ -71,3 +71,4 @@ unset($result);
 </body>
 
 </html>
+<script type="text/javascript" src="disconnect.js"></script>

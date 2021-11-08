@@ -1,8 +1,35 @@
 <?php
+\session_start();
 require_once "config.php";
+include_once('header.php');
+
 // define variables and set to empty values
-  $nomErr = $prenomErr = $pseudoErr = $mailErr = $mdpErr = "";
-  $nom = $prenom = $pseudo = $mail = $mdp = "";
+$nomErr = $prenomErr = $pseudoErr = $mailErr = $mdpErr = "";
+$nom = $prenom = $pseudo = $mail = $mdp = "";
+
+if (isset($_SESSION["login"])) {
+  if ($_SESSION["login"] == true) {
+    $query = "SELECT * FROM redacteur
+       WHERE idredacteur = :idredacteur";
+
+    $statement = $objPdo->prepare($query);
+    $statement->bindValue(":idredacteur", $_SESSION["id"], PDO::PARAM_INT);
+    $statement->bindColumn(2, $nom);
+    $statement->bindColumn(3, $prenom);
+    $statement->bindColumn(4, $mail);
+    $statement->bindColumn(5, $mdp);
+    $statement->bindColumn(6, $pseudo);
+    $statement->execute();
+    foreach ($statement as $row) {
+    }
+    // print_r($_SESSION);
+  }
+}
+
+
+
+
+
 if (isset($_POST['submit'])) {
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -52,7 +79,18 @@ if (isset($_POST['submit'])) {
   }
 
   // Check input errors before inserting in database
-  if (empty($nomErr) && empty($prenomErr) && empty($pseudoErr) && empty($mailErr) && empty($mdpErr)) {
+  if (isset($_SESSION['login'])) {
+    if ($_SESSION['login'] == true) {
+      $update_stmt = $objPdo->prepare("UPDATE redacteur SET nom = :nom ,prenom = :prenom,adressemail = :adressemail,motdepasse = :mdp,pseudo = :pseudo WHERE redacteur.idredacteur=" . $_SESSION['id'] . "");
+      $update_stmt->bindValue("nom", $nom, PDO::PARAM_STR);
+      $update_stmt->bindValue("prenom", $prenom, PDO::PARAM_STR);
+      $update_stmt->bindValue("adressemail", $mail, PDO::PARAM_STR);
+      $update_stmt->bindValue("mdp", $mdp, PDO::PARAM_STR);
+      $update_stmt->bindValue("pseudo", $pseudo, PDO::PARAM_STR);
+      $update_stmt->execute();
+      header("Location:index.php");
+    }
+  } else if (empty($nomErr) && empty($prenomErr) && empty($pseudoErr) && empty($mailErr) && empty($mdpErr)) {
 
     ////////////////////////////////
     $insert_stmt = $objPdo->prepare("INSERT INTO redacteur(nom, prenom, adressemail, motdepasse, pseudo) VALUES (:nom, :prenom, :adressemail, :mdp, :pseudo)");
@@ -62,6 +100,7 @@ if (isset($_POST['submit'])) {
     $insert_stmt->bindValue("mdp", $mdp, PDO::PARAM_STR);
     $insert_stmt->bindValue("pseudo", $pseudo, PDO::PARAM_STR);
     $insert_stmt->execute();
+
     header("Location: index.php");
     ////////////////////////////////
   }
@@ -93,8 +132,16 @@ if (isset($_POST['submit'])) {
 
 <body>
   <div class="wrapper">
-    <h2>Creation d'un compte de redacteur</h2>
-    <p>Remplissez ce formulaire afin de creer votre compte.</p>
+    <?php
+    if (isset($_SESSION['login'])) {
+      if ($_SESSION['login'] == true) {
+        echo ('<h2>Modification dun compte de redacteur</h2></br><p>Remplissez ce formulaire afin de modifier votre compte.</p>');
+      }
+    } else {
+      echo ('<h2>Creation dun compte de redacteur</h2></br><p>Remplissez ce formulaire afin de creer votre compte.</p>');
+    }
+    ?>
+
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
       Nom: <input type="text" name="nom" value="<?php echo $nom; ?>">
       <span class="error">* <?php echo $nomErr; ?></span>
@@ -102,7 +149,7 @@ if (isset($_POST['submit'])) {
       Prenom: <input type="text" name="prenom" value="<?php echo $prenom; ?>">
       <span class="error">* <?php echo $prenomErr; ?></span>
       <br><br>
-      Pseudo: <input type="text" name="pseudo" value="<?php echo $pseudo; ?>">
+      Pseudo: <input type="text" name="pseudo" value="<?php echo $pseudo; ?>" <?php echo "readonly" ?>>
       <span class="error">* <?php echo $pseudoErr; ?></span>
       <br><br>
       E-mail: <input type="text" name="mail" value="<?php echo $mail; ?>">
@@ -111,7 +158,11 @@ if (isset($_POST['submit'])) {
       Mot de Passe: <input type="text" name="mdp" value="<?php echo $mdp; ?>">
       <span class="error">* <?php echo $mdpErr; ?></span>
       <br><br>
-      <input type="submit" name="submit" value="S'enregistrer">
+      <input type="submit" name="submit" value="<?php if (isset($_SESSION["login"])) {
+                                                  echo "Mettre a jour";
+                                                } else {
+                                                  echo "S'enregistrer";
+                                                } ?>">
       <button type="button" class="create" onclick="document.location.href='index.php'">Retour</button>
     </form>
   </div>
