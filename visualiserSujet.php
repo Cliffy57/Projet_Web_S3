@@ -63,7 +63,7 @@ include_once('header.php');
             $insert_stmt->bindValue("daterep", date('Y-m-d H:i:s'), PDO::PARAM_STR);
             $insert_stmt->bindValue("textecom", $textecom, PDO::PARAM_STR);
             $insert_stmt->execute();
-            header("Location:index.php");
+            // header("Location:index.php");
             ////////////////////////////////
           } else {
             echo "Erreur lors de la creation du commentaire !";
@@ -103,34 +103,33 @@ include_once('header.php');
     $ch = '<table border="1">';
     $ch .= '<tr><th>Auteur</th><th>Date</th><th>Commentaire</th><th></th></tr>';
     foreach ($result as $row) {
+    
       $ch .= '<tr>';
       $ch .= '<td>' . $row['pseudo'] . '</td>';
       $ch .= '<td>' . $row['daterep'] . '</td>';
       $ch .= '<td>' . $row['textereponse'] . '</td>';
       if (isset($_SESSION['login'])) {
         if ($_SESSION['login'] == true) {
-          $verif = $objPdo->query('SELECT idredacteur FROM reponse WHERE idredacteur= ' .$_SESSION['id']. ' AND idredacteur='.$row['idredacteur']. ' AND idsujet=' . $_GET["id"] . '');
-          $verif = $objPdo->prepare($req);
-          $verif->execute();
-          if ($verif==true) {
-          $ch .='<td><button type="button" class="create" onclick="document.location.href=\'creerSujet.php\'">Supprimer</button></td>';
+          if($_SESSION['id']==$row['idredacteur']){
+            include('supprimerrep.php');
+            
           }
-          echo("resultat requete ");
-          echo($verif->execute());
-          echo(" id de la session ");
-          echo($_SESSION['id']);
-          echo(" id de la ligne du redac ");
-          echo($row['idredacteur']);
-          echo("      ");
-        
+          
+          
         }
       }
       }
+      
       
     $ch .= '</table>';
     unset($result);
     ?>
     <?php echo ($ch); ?>
+
+    <?php
+    
+    
+    ?>
 
     <button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
   </div>
