@@ -2,6 +2,9 @@
 session_start();
 require_once "config.php";
 include_once('header.php');
+if (isset($_GET['id'])){
+  $_POST['idsujet']=$_GET['id'];
+}
 // echo ($_GET["id"]);
 ?>
 <html>
@@ -18,6 +21,7 @@ include_once('header.php');
     <dl>
       <dt>Titre :</dt>
       <dd><?php
+          echo ($_GET["id"]);
           $result = $objPdo->query('SELECT * FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet=' . $_GET["id"] . '');
           while ($row = $result->fetch()) {
             echo $row['datesujet'] . " __ " . $row['pseudo'] . " __ " . $row['titresujet'];
@@ -58,7 +62,7 @@ include_once('header.php');
 
             ////////////////////////////////
             $insert_stmt = $objPdo->prepare('INSERT INTO reponse (idsujet,idredacteur,daterep,textereponse) VALUES(:idsujet,:idredacteur,:daterep,:textecom)');
-            $insert_stmt->bindValue("idsujet", $_GET["id"], PDO::PARAM_STR);
+            $insert_stmt->bindValue("idsujet", $_POST["idsujet"], PDO::PARAM_STR);
             $insert_stmt->bindValue("idredacteur", $_SESSION['id'], PDO::PARAM_STR);
             $insert_stmt->bindValue("daterep", date('Y-m-d H:i:s'), PDO::PARAM_STR);
             $insert_stmt->bindValue("textecom", $textecom, PDO::PARAM_STR);
@@ -103,32 +107,36 @@ include_once('header.php');
     $ch = '<table border="1">';
     $ch .= '<tr><th>Auteur</th><th>Date</th><th>Commentaire</th><th></th></tr>';
     foreach ($result as $row) {
-    
+
       $ch .= '<tr>';
       $ch .= '<td>' . $row['pseudo'] . '</td>';
       $ch .= '<td>' . $row['daterep'] . '</td>';
       $ch .= '<td>' . $row['textereponse'] . '</td>';
       if (isset($_SESSION['login'])) {
         if ($_SESSION['login'] == true) {
-          if($_SESSION['id']==$row['idredacteur']){
-            include('supprimerrep.php');
-            
+          if ($_SESSION['id'] == $row['idredacteur']) {
+            // $ch .= '<td><a href="supprimerrep.php?a&id=' . urlencode($_GET['id']) . '&idrep=' . urlencode($row['idreponse']) . '">Supprimer</a></td>'; // remplacer par un button
+            $ch .= '<form method="post" action="supprimerrep.php?a&id=' . urlencode($_GET['id']) . '&idrep=' . urlencode($row['idreponse']) . '"><td><input type="submit" name="delete" value="Supprimer"></td></form>';
+
+            // if (isset($_POST['delete'])) {
+            //   $delete_stmt = $objPdo->prepare('DELETE FROM reponse WHERE reponse.idreponse=:idreponse');
+            //   $delete_stmt->bindValue("idreponse",  urlencode($row['idreponse']), PDO::PARAM_STR);
+            //   $delete_stmt->execute();
+            // }
           }
-          
-          
         }
       }
-      }
-      
-      
+    }
+
+
     $ch .= '</table>';
     unset($result);
     ?>
     <?php echo ($ch); ?>
 
     <?php
-    
-    
+
+
     ?>
 
     <button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
