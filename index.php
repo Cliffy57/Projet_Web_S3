@@ -14,12 +14,13 @@ $sujets = array();
 foreach ($result as $row) {
   $sujets[$row['idsujet']] = $row['nb'];
 }
-$req = 'select * from sujet,redacteur where sujet.idredacteur=redacteur.idredacteur order by datesujet DESC ';
+$req = 'select *,DATE_FORMAT(datesujet, "%d/%m/%Y") AS datesujet from sujet,redacteur where sujet.idredacteur=redacteur.idredacteur order by datesujet DESC ';
 $result = $objPdo->prepare($req);
 $result->execute();
 $ch = '<table border="1">';
 $ch .= '<tr><th>Titre</th><th>Date</th><th>Redacteur</th><th>Sujet</th></tr>';
 foreach ($result as $row) {
+
   $ch .= '<tr>';
   $ch .= '<td>' . $row['titresujet'] . '</td>';
   $ch .= '<td>' . $row['datesujet'] . '</td>';

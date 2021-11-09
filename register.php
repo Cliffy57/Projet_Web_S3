@@ -149,7 +149,7 @@ if (isset($_POST['submit'])) {
       Prenom: <input type="text" name="prenom" value="<?php echo $prenom; ?>">
       <span class="error">* <?php echo $prenomErr; ?></span>
       <br><br>
-      Pseudo: <input type="text" name="pseudo" value="<?php echo $pseudo; ?>" <?php echo "readonly" ?>>
+      Pseudo: <input type="text" name="pseudo" value="<?php echo $pseudo; ?>">
       <span class="error">* <?php echo $pseudoErr; ?></span>
       <br><br>
       E-mail: <input type="text" name="mail" value="<?php echo $mail; ?>">

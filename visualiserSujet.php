@@ -2,8 +2,8 @@
 session_start();
 require_once "config.php";
 include_once('header.php');
-if (isset($_GET['id'])){
-  $_POST['idsujet']=$_GET['id'];
+if (isset($_GET['id'])) {
+  $_POST['idsujet'] = $_GET['id'];
 }
 // echo ($_GET["id"]);
 ?>
@@ -21,10 +21,11 @@ if (isset($_GET['id'])){
     <dl>
       <dt>Titre :</dt>
       <dd><?php
-          echo ($_GET["id"]);
-          $result = $objPdo->query('SELECT * FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet=' . $_GET["id"] . '');
+          // echo ($_GET["id"]);
+          $result = $objPdo->query('SELECT *,DATE_FORMAT(datesujet, "%d/%m /%Y") AS datesujetjour,DATE_FORMAT(datesujet, "%h:%i:%s") AS datesujetheure FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet=' . $_GET["id"] . '');
           while ($row = $result->fetch()) {
-            echo $row['datesujet'] . " __ " . $row['pseudo'] . " __ " . $row['titresujet'];
+            echo $row['titresujet']."</br>";
+            echo "Sujet proposé par : ". $row['pseudo'] .", le : ".$row['datesujetjour'] . " à " .$row['datesujetheure'];
           }
           ?></dd>
       <dt>Sujet :</dt>
@@ -99,13 +100,13 @@ if (isset($_GET['id'])){
     foreach ($result as $row) {
       $sujets[$row['idreponse']] = $row['nb'];
     }
-    $req = 'select * from reponse,redacteur where idsujet =' . $_GET["id"] . ' and reponse.idredacteur=redacteur.idredacteur order by daterep DESC ';
+    $req = 'select *,DATE_FORMAT(daterep, "%d/%m/%Y à %h:%i:%s") AS daterep from reponse,redacteur where idsujet =' . $_GET["id"] . ' and reponse.idredacteur=redacteur.idredacteur order by daterep DESC ';
     $result = $objPdo->prepare($req);
     $result->execute();
     // $reponseur ='select pseudo from redacteur where redacteur.idredacteur=:idredacteur';
     // $reponseur
     $ch = '<table border="1">';
-    $ch .= '<tr><th>Auteur</th><th>Date</th><th>Commentaire</th><th></th></tr>';
+    $ch .= '<tr><th>Auteur</th><th>Date/Heure</th><th>Commentaire</th><th></th></tr>';
     foreach ($result as $row) {
 
       $ch .= '<tr>';
