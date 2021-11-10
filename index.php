@@ -44,7 +44,10 @@ unset($result);
 <head>
   <meta charset="utf-8">
   <title>Site de Blog</title>
-  <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -57,13 +60,13 @@ unset($result);
   if (isset($_SESSION['login'])) {
     if ($_SESSION['login'] == true) {
      
-      echo ('<button type="button" class="create" onclick="document.location.href=\'creerSujet.php\'">Créer un sujet</button>');
-      echo ('<button type="button" id="disconnect">Deconnexion</button>');
-      echo ('<button type="button" class="register" onclick="document.location.href=\'register.php\'">Modifier Compte</button>');
+      echo ('<button type="button" class="btn create" onclick="document.location.href=\'creerSujet.php\'">Créer un sujet</button>');
+      echo ('<button type="button" class="btn" id="disconnect">Deconnexion</button>');
+      echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">Modifier Compte</button>');
     }
   } else {
-    echo ('<button type="button" class="register" onclick="document.location.href=\'register.php\'">S\'inscrire</button>');
-    echo ('<button type="button" class="authent" onclick="document.location.href=\'authentification.php\'">Connexion</button>');
+    echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">S\'inscrire</button>');
+    echo ('<button type="button" class="btn authent" onclick="document.location.href=\'authentification.php\'">Connexion</button>');
   }
   ?>
   <!-- <input type="button"class="authent" onclick="document.location.href='connect.php'">S'authentifier</input> -->

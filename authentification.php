@@ -54,6 +54,10 @@ if (isset($_POST['submit'])) {
 <html>
 
 <head>
+<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
   <style>
     .error {
       color: #FF0000;
@@ -75,9 +79,9 @@ if (isset($_POST['submit'])) {
     Mot de Passe: <input type="text" name="mdp" value="<?php echo $mdp; ?>">
     <span class="error">* <?php echo $mdpErr; ?></span>
     <br><br>
-    <input type="submit" name="submit" value="Se Connecter">
+    <input type="submit" class="btn" name="submit" value="Se Connecter">
   </form>
-  <button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
+  <button type="button" class="btn exit" onclick="document.location.href='index.php'">Retour</button>
 </body>
 
 </html>

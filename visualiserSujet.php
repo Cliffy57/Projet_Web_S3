@@ -12,7 +12,10 @@ if (isset($_GET['id'])) {
 <head>
   <meta charset="utf-8">
   <title>Sujet</title>
-  <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -24,8 +27,10 @@ if (isset($_GET['id'])) {
           // echo ($_GET["id"]);
           $result = $objPdo->query('SELECT *,DATE_FORMAT(datesujet, "%d/%m /%Y") AS datesujetjour,DATE_FORMAT(datesujet, "%h:%i:%s") AS datesujetheure FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet=' . $_GET["id"] . '');
           while ($row = $result->fetch()) {
-            echo $row['titresujet']."</br>";
-            echo "Sujet proposé par : ". $row['pseudo'] .", le : ".$row['datesujetjour'] . " à " .$row['datesujetheure'];
+            echo $row['titresujet'] . "</br>";
+            // $date = strtotime($row['datesujet']);
+            // echo date(':H:i:s', $date);
+            echo "Sujet proposé par : " . $row['pseudo'] . ", le : " . $row['datesujetjour'] . " à " . $row['datesujetheure'];
           }
           ?></dd>
       <dt>Sujet :</dt>
@@ -140,7 +145,7 @@ if (isset($_GET['id'])) {
 
     ?>
 
-    <button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
+    <button type="button" class="btn exit" onclick="document.location.href='index.php'">Retour</button>
   </div>
 </body>
 

@@ -113,16 +113,16 @@ if (isset($_POST['submit'])) {
 
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+
   <title>S'enregister</title>
   <style>
     .error {
       color: #FF0000;
     }
-
-    body {
-      font: 14px sans-serif;
-    }
-
     .wrapper {
       width: 360px;
       padding: 20px;
@@ -131,6 +131,7 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
+  
   <div class="wrapper">
     <?php
     if (isset($_SESSION['login'])) {
@@ -158,12 +159,12 @@ if (isset($_POST['submit'])) {
       Mot de Passe: <input type="text" name="mdp" value="<?php echo $mdp; ?>">
       <span class="error">* <?php echo $mdpErr; ?></span>
       <br><br>
-      <input type="submit" name="submit" value="<?php if (isset($_SESSION["login"])) {
+      <input type="submit" class="btn"name="submit" value="<?php if (isset($_SESSION["login"])) {
                                                   echo "Mettre a jour";
                                                 } else {
                                                   echo "S'enregistrer";
                                                 } ?>">
-      <button type="button" class="create" onclick="document.location.href='index.php'">Retour</button>
+      <button type="button" class="btn create" onclick="document.location.href='index.php'">Retour</button>
     </form>
   </div>
 </body>

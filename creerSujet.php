@@ -56,6 +56,10 @@ if (isset($_POST['submit'])) {
 
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
   <title>Creation d'un Sujet</title>
   <style>
     .error {
@@ -91,7 +95,7 @@ if (isset($_POST['submit'])) {
       <input type="submit" name="submit" value="Ajouter le Sujet">
     </form>
   </div>
-  <button type="button" class="exit" onclick="document.location.href='index.php'">Retour</button>
+  <button type="button" class="btn exit" onclick="document.location.href='index.php'">Retour</button>
 </body>
 
 </html>
