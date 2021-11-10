@@ -40,7 +40,21 @@ if (isset($_GET['id'])) {
           ?></dd>
     </dl>
   </div>
-  <h1>Reponse:</h1>
+  <h3><?php 
+    $count_stmt = $objPdo->prepare('SELECT COUNT("idreponse") AS nbrep FROM reponse WHERE reponse.idsujet=:idsujet');
+    $count_stmt->bindValue("idsujet",  $_GET['id'], PDO::PARAM_STR);
+    $count_stmt->execute();
+    while ($row = $count_stmt->fetch()) {
+      if($row['nbrep']<2){
+        echo $row['nbrep'].' réponse';
+      }else{
+        echo $row['nbrep'].' réponses';
+      }
+   
+
+    }
+    ?>
+    </h3>
   <div class="reponses">
     <!-- Commenter -->
     <?php
@@ -84,12 +98,12 @@ if (isset($_GET['id'])) {
       echo ('<form method="post" action="" >
 
         <div>
-                    <label>Texte de votre commentaire:</label>
+                    <label>Contenu de votre commentaire:</label>
                     <textarea name="textecom" maxlength="400" value="<?php echo $textecom;?>"></textarea>
                     <span class="erreur"><?php echo $textecomErr ;?></span>
                 </div>
               
-          <input type="submit" name="submit" value="Commenter">
+          <input type="submit" class="btn" name="submit" value="Commenter">
         </form>');
     }
 
@@ -121,14 +135,7 @@ if (isset($_GET['id'])) {
       if (isset($_SESSION['login'])) {
         if ($_SESSION['login'] == true) {
           if ($_SESSION['id'] == $row['idredacteur']) {
-            // $ch .= '<td><a href="supprimerrep.php?a&id=' . urlencode($_GET['id']) . '&idrep=' . urlencode($row['idreponse']) . '">Supprimer</a></td>'; // remplacer par un button
-            $ch .= '<form method="post" action="supprimerrep.php?a&id=' . urlencode($_GET['id']) . '&idrep=' . urlencode($row['idreponse']) . '"><td><input type="submit" name="delete" value="Supprimer"></td></form>';
-
-            // if (isset($_POST['delete'])) {
-            //   $delete_stmt = $objPdo->prepare('DELETE FROM reponse WHERE reponse.idreponse=:idreponse');
-            //   $delete_stmt->bindValue("idreponse",  urlencode($row['idreponse']), PDO::PARAM_STR);
-            //   $delete_stmt->execute();
-            // }
+            $ch .= '<form method="post" action="supprimerrep.php?a&id=' . urlencode($_GET['id']) . '&idrep=' . urlencode($row['idreponse']) . '"><td><input type="submit" class="btn" name="delete" value="Supprimer"></td></form>';
           }
         }
       }

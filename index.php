@@ -18,22 +18,23 @@ $req = 'select *,DATE_FORMAT(datesujet, "%d/%m/%Y") AS datesujet from sujet,reda
 $result = $objPdo->prepare($req);
 $result->execute();
 $ch = '<table border="1">';
-$ch .= '<tr><th>Titre</th><th>Date</th><th>Redacteur</th><th>Sujet</th></tr>';
+$ch .= '<tr><th>Titre :</th><th>écrit le :</th><th>par :</th><th></th></tr>';
+// <th>Sujet</th>
 foreach ($result as $row) {
 
   $ch .= '<tr>';
   $ch .= '<td>' . $row['titresujet'] . '</td>';
   $ch .= '<td>' . $row['datesujet'] . '</td>';
   $ch .= '<td>' . $row['pseudo'] . '</td>';
-  $ch .= '<td>' . $row['textesujet'] . '</td>';
+  // $ch .= '<td>' . $row['textesujet'] . '</td>';
   if (array_key_exists($row['idsujet'], $sujets)) {
     $lib = 'Visualiser';
     if ($sujets[$row['idsujet']] > 1) {
       $lib .= 's';
     }
-    $ch .= '<td><a href="visualiserSujet.php?id=' . urlencode($row['idsujet']) . '">' . $lib . '</a></td>';
+    $ch .= '<td><a class="btn"href="visualiserSujet.php?id=' . urlencode($row['idsujet']) . '">' . $lib . '</a></td>';
   } else {
-    $ch .= '<td><a href="editSujet.php?a&id=' . urlencode($row['idsujet']) . '">Ajouter Sujet</a></td>';
+    $ch .= '<td><a class="btn" href="creerSujet.php?a&id=' . urlencode($row['idsujet']) . '">Ajouter Sujet</a></td>';
   }
 }
 $ch .= '</table>';
@@ -61,8 +62,8 @@ unset($result);
     if ($_SESSION['login'] == true) {
      
       echo ('<button type="button" class="btn create" onclick="document.location.href=\'creerSujet.php\'">Créer un sujet</button>');
-      echo ('<button type="button" class="btn" id="disconnect">Deconnexion</button>');
       echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">Modifier Compte</button>');
+      echo ('<button type="button" class="btn" id="disconnect">Deconnexion</button>');
     }
   } else {
     echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">S\'inscrire</button>');

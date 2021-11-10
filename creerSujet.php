@@ -92,7 +92,7 @@ if (isset($_POST['submit'])) {
         <textarea name="textesujet" maxlength="900" value="<?php echo $textesujet; ?>"></textarea>
         <span class="erreur"><?php echo $textesujetErr; ?></span>
       </div>
-      <input type="submit" name="submit" value="Ajouter le Sujet">
+      <input type="submit" class="btn" name="submit" value="Ajouter le Sujet">
     </form>
   </div>
   <button type="button" class="btn exit" onclick="document.location.href='index.php'">Retour</button>

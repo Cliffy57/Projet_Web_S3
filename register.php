@@ -123,6 +123,7 @@ if (isset($_POST['submit'])) {
     .error {
       color: #FF0000;
     }
+
     .wrapper {
       width: 360px;
       padding: 20px;
@@ -131,12 +132,15 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-  
+
   <div class="wrapper">
     <?php
     if (isset($_SESSION['login'])) {
       if ($_SESSION['login'] == true) {
         echo ('<h2>Modification dun compte de redacteur</h2></br><p>Remplissez ce formulaire afin de modifier votre compte.</p>');
+        if ($_SESSION['id'] == $row['idredacteur']) {
+          echo '<form method="post" action="supprimercompte.php?a&id=' . urlencode($_SESSION['id']). '"><td><input type="submit" class="btn" id="deleteaccount"name="delete" value="Supprimer le compte"onclick="confirm(\'Etes vous certains de vouloir supprimer votre compte ? Cela engendrera la suppression definitive des Sujets/Reponses provenant de votre compte.\')"></td></form>';
+        }
       }
     } else {
       echo ('<h2>Creation dun compte de redacteur</h2></br><p>Remplissez ce formulaire afin de creer votre compte.</p>');
@@ -159,11 +163,11 @@ if (isset($_POST['submit'])) {
       Mot de Passe: <input type="text" name="mdp" value="<?php echo $mdp; ?>">
       <span class="error">* <?php echo $mdpErr; ?></span>
       <br><br>
-      <input type="submit" class="btn"name="submit" value="<?php if (isset($_SESSION["login"])) {
-                                                  echo "Mettre a jour";
-                                                } else {
-                                                  echo "S'enregistrer";
-                                                } ?>">
+      <input type="submit" class="btn" name="submit" value="<?php if (isset($_SESSION["login"])) {
+                                                              echo "Mettre a jour";
+                                                            } else {
+                                                              echo "S'enregistrer";
+                                                            } ?>">
       <button type="button" class="btn create" onclick="document.location.href='index.php'">Retour</button>
     </form>
   </div>
