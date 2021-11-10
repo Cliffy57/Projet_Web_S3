@@ -1,0 +1,245 @@
+body {
+  margin:0;
+  -webkit-overflow-scrolling: touch;
+  font-family: "Calibri", "Helvetica", "Arial", "Verdana", "sans-serif";
+  color: #333333;
+  line-height: 1.7857;
+  font-weight: normal;
+  font-size:14px;
+  font-style: normal;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  }
+  main {
+    display: block;
+  }
+  table {
+  font-size: 14px;
+  background: #fefefe;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  border-collapse: collapse;
+  }
+  th, td {
+  padding: 8px 8px;
+  text-align: left;
+  border-right: 1px solid #F2F2F2;
+  border-bottom: 1px solid #EDE9E9;
+  }
+  th {
+  background: #f0f0f0;
+  padding-top: 8px;
+  position: relative;
+  }
+  label
+  {
+   display: block;
+   width: 100px;
+  text-align : right;
+   float: left;
+  padding-right : 5px;
+  }
+  .erreur
+  {
+   color : red;
+  font-weight : bold;
+  font-style : italic;
+  }
+  h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+  }
+  hr {
+    box-sizing: content-box; /* 1 */
+    height: 0; /* 1 */
+    overflow: visible; /* 2 */
+  }
+  pre {
+    font-family: monospace, monospace; /* 1 */
+    font-size: 1em; /* 2 */
+  }
+  /* Retire le fond grise sur les liens actifs sur IE10 */
+  a {
+    background-color: transparent;
+  }
+  bbr[title] {
+    border-bottom: none; /* 1 */
+    text-decoration: underline; /* 2 */
+    text-decoration: underline dotted; /* 2 */
+  }
+  b,
+strong {
+  font-weight: bolder;
+}
+code,
+kbd,
+samp {
+  font-family: monospace, monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+img {
+  border-style: none;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+  /* Montre l'overflow dans IE10 et Edge. */
+button,
+input { /* 1 */
+  overflow: visible;
+}
+
+button,
+select { /* 1 */
+  text-transform: none;
+}
+
+/* Correct the inability to style clickable types in iOS and Safari. */
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+/* Retirez la bordure intérieure et la bordure interieure dans Firefox. */
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/* Restaurer les styles de focus non définis par la règle précédente */
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+/**
+ * Corrige le padding dans Firefox.
+ */
+
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+
+/* Corrigez l'habillage du texte dans Edge et IE.
+Corrigez l'héritage de couleur des éléments `fieldset` dans IE. */
+
+legend {
+  box-sizing: border-box; /* 1 */
+  color: inherit; /* 2 */
+  display: table; /* 1 */
+  max-width: 100%; /* 1 */
+  padding: 0; /* 3 */
+  white-space: normal; /* 1 */
+}
+
+/* Ajoutez l'alignement vertical correct dans Chrome, Firefox et Opera. */
+
+progress {
+  vertical-align: baseline;
+}
+
+/* Remove the default vertical scrollbar in IE 10+. */
+
+textarea {
+  overflow: auto;
+}
+
+/* Add the correct box sizing in IE 10. Remove the padding in IE 10. */
+ 
+
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/* Corrigez le style de curseur des boutons d'incrément et de décrémentation dans Chrome. */
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/* Corrigez l'aspect étrange dans Chrome et Safari.Corrigez le style de contour dans Safari. */
+
+[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/* Retirez le padding dans Chrome et Safari sur macOS. */
+
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/* Corrigez l'incapacité de style types cliquables dans iOS et Safari.Changez les propriétés de la police en `inherit` dans Safari. */
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/* Interactif */
+
+/* Add the correct display in Edge, IE 10+, and Firefox. */
+
+details {
+  display: block;
+}
+
+/* Ajoutez l'affichage correct dans tous les navigateurs. */
+summary {
+  display: list-item;
+}
+
+/* Misc
+   ========================================================================== */
+/* Ajoutez l'affichage correct dans IE 10+. */
+
+template {
+  display: none;
+}
+[hidden] {
+  display: none;
+}
