@@ -22,7 +22,7 @@ if (isset($_GET['id'])) {
   <h1 class="page-header">Voici le sujet:</h1>
   <div class="sujet">
     <dl>
-      <dt>Titre :</dt>
+      <dd>Titre :</dd>
       <dd><?php
           // echo ($_GET["id"]);
           $result = $objPdo->query('SELECT *,DATE_FORMAT(datesujet, "%d/%m /%Y") AS datesujetjour,DATE_FORMAT(datesujet, "%H:%i:%s") AS datesujetheure FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet=' . $_GET["id"] . '');
@@ -33,7 +33,7 @@ if (isset($_GET['id'])) {
             echo "Sujet proposé par : " . $row['pseudo'] . ", le : " . $row['datesujetjour'] . " à " . $row['datesujetheure'];
           }
           ?></dd>
-      <dt>Sujet :</dt>
+      <dd>Sujet :</dd>
       <dd><?php
           $result = $objPdo->query('SELECT textesujet FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet=' . $_GET["id"] . '');
           echo $result->fetch()['textesujet'];
@@ -76,7 +76,13 @@ if (isset($_GET['id'])) {
             // header("Location:index.php");
             ////////////////////////////////
           } else {
-            echo "Erreur lors de la creation du commentaire !";
+            $errorComm = '<label style="  
+            position: fixed;
+            color: red;
+            display: block;
+            left: 50em;
+            top:73%;
+            width: 20em; ">Erreur lors de la creation du commentaire !</label>';
           }
           ////////////////////////////////
         }
@@ -100,9 +106,12 @@ if (isset($_GET['id'])) {
           
         </form>');
     }
+    if(isset($errorComm)){
+      echo $errorComm;
+    }
+  ?>
 
-
-    ?>
+    
     <h3 class="nbcom"><?php
                     $count_stmt = $objPdo->prepare('SELECT COUNT("idreponse") AS nbrep FROM reponse WHERE reponse.idsujet=:idsujet');
                     $count_stmt->bindValue("idsujet",  $_GET['id'], PDO::PARAM_STR);
@@ -132,7 +141,12 @@ if (isset($_GET['id'])) {
     // $reponseur ='select pseudo from redacteur where redacteur.idredacteur=:idredacteur';
     // $reponseur
     $ch = '<table border="1">';
-    $ch .= '<tr><th>Auteur</th><th>Date/Heure</th><th>Commentaire</th><th></th></tr>';
+    $ch .= '<tr><th>Auteur</th><th>Date/Heure</th><th>Commentaire</th>';
+    if (isset($_SESSION["id"])) {
+
+      $ch .= '<th></th>';
+    }
+    $ch .= "</tr>";
     foreach ($result as $row) {
 
       $ch .= '<tr>';

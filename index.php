@@ -18,7 +18,12 @@ $req = 'select *,DATE_FORMAT(datesujet, "%d/%m/%Y") AS datesujet from sujet,reda
 $result = $objPdo->prepare($req);
 $result->execute();
 $ch = '<table border="1">';
-$ch .= '<tr><th>Titre :</th><th>écrit le :</th><th>par :</th><th></th><th></th></tr>';
+$ch .= '<tr><th>Titre :</th><th>écrit le :</th><th>par :</th><th></th>';
+if (isset($_SESSION["id"])) {
+
+  $ch .= '<th></th>';
+}
+$ch .= "</tr>";
 // <th>Sujet</th>
 foreach ($result as $row) {
 
@@ -32,16 +37,14 @@ foreach ($result as $row) {
     if ($sujets[$row['idsujet']] > 1) {
       $lib .= 's';
     }
-    $ch.='<td><a class="btn" href="visualiserSujet.php?id=' . urlencode($row['idsujet']) . '">' . $lib . '</a></td>';
-    if(isset($_SESSION["id"])){
-      if($_SESSION["id"] == $row["idredacteur"]){
-      $ch.='<td><a class="btn" href="supprimersujet.php?idsuj='.urlencode($row['idsujet']).'">Supprimer</a></td>';
+    $ch .= '<td><a class="btn" href="visualiserSujet.php?id=' . urlencode($row['idsujet']) . '">' . $lib . '</a></td>';
+    if (isset($_SESSION["id"])) {
+      if ($_SESSION["id"] == $row["idredacteur"]) {
+        $ch .= '<td><a class="btn" href="supprimersujet.php?idsuj=' . urlencode($row['idsujet']) . '">Supprimer</a></td>';
+      }else{
+        $ch.="<td></td>";
+      }
     }
-    else{
-      $ch.='<td></td>';
-    }
-  }
-
   } else {
     $ch .= '<td><a class="btn" href="creerSujet.php?a&id=' . urlencode($row['idsujet']) . '">Ajouter Sujet</a></td>';
   }
@@ -62,28 +65,28 @@ unset($result);
 
 <body>
   <h1 class="page-header">Page d'accueil</h1>
-  <h2 class="page-header--sec">Liste des sujets</h2>
+  <h2 class="page-header-3d">Liste des sujets</h2>
   <div class="button-nav">
-  <?php
-  $btnClass;
-  $btnHref;
-  $btnTxt;
-  if (isset($_SESSION['login'])) {
-    if ($_SESSION['login'] == true) {
+    <?php
+    $btnClass;
+    $btnHref;
+    $btnTxt;
+    if (isset($_SESSION['login'])) {
+      if ($_SESSION['login'] == true) {
 
-      echo ('<button type="button" class="btn create" onclick="document.location.href=\'creerSujet.php\'">Créer un sujet</button>');
-      echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">Modifier Compte</button>');
-      echo ('<button type="button" class="btn" id="disconnect">Deconnexion</button>');
+        echo ('<button type="button" class="btn create" onclick="document.location.href=\'creerSujet.php\'">Créer un sujet</button>');
+        echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">Modifier Compte</button>');
+        echo ('<button type="button" class="btn" id="disconnect">Deconnexion</button>');
+      }
+    } else {
+      echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">S\'inscrire</button>');
+      echo ('<button type="button" class="btn authent" onclick="document.location.href=\'authentification.php\'">Connexion</button>');
     }
-  } else {
-    echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">S\'inscrire</button>');
-    echo ('<button type="button" class="btn authent" onclick="document.location.href=\'authentification.php\'">Connexion</button>');
-  }
-  ?>
+    ?>
   </div>
   <!-- <input type="button"class="authent" onclick="document.location.href='connect.php'">S'authentifier</input> -->
   <div class="table">
-      <?php echo ($ch); ?>
+    <?php echo ($ch); ?>
   </div>
 
 </html>

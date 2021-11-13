@@ -57,7 +57,13 @@ if (isset($_POST['submit'])) {
     
     
   } else {
-    echo "Erreur lors de la creation du sujet !";
+    $errorAuthent ='<label style="  
+    position: fixed;
+    color: red;
+    display: block;
+    left: 6%;
+    top:70%;
+    width: 50%; "> Erreur lors de la creation du sujet !</label>';
   }
 }
 
@@ -96,19 +102,26 @@ if (isset($_POST['submit'])) {
       <form class="creation"method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <div class=create-sujet>
           <input type="text" name="titresujet" placeholder="Titre du sujet" cols="1" rows="1"value='<?php echo $titresujet; ?>'></input>
-          <span class="erreur"><?php echo $titresujetErr; ?></span>
+         
         </div>
+        <span class="erreur"><?php echo $titresujetErr; ?></span>
         <?php echo $textesujet?>
         <div class=create-sujet>
           <textarea class="create-sujet"name="textesujet" maxlength="900" placeholder="Texte de votre sujet" cols="30" rows="5" value='<?php echo $textesujet; ?>'></textarea>
-          <span class="erreur"><?php echo $textesujetErr; ?></span>
+          
         </div>
+        <span class="erreur"><?php echo $textesujetErr; ?></span><br><br>
 
             
             <input type="submit" class="btn" name="submit" value="Ajouter le Sujet">
       
       </form>
     </div>
+    <?php 
+    if(isset($errorAuthent)){
+      echo $errorAuthent;
+    }
+  ?>
     <button type="button" class="btn exit" onclick="document.location.href='index.php'">Retour</button>
   </body>
 

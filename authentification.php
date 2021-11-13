@@ -45,7 +45,13 @@ if (isset($_POST['submit'])) {
       $_SESSION['login'] = true;
       header("Location: index.php");
     } else {
-      print "Error";
+      $errorAuthent = '<label style="  
+      position: fixed;
+      color: red;
+      display: block;
+      left: 50em;
+      top:20em;
+      width: 20em; ">Mot de passe ou identifiant incorrecte ! </label>';
     }
     ////////////////////////////////
   }
@@ -55,15 +61,11 @@ if (isset($_POST['submit'])) {
 <html>
 
 <head>
-<link rel="stylesheet" href="css/mainstyle.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .error {
-      color: #FF0000;
-    }
-  </style>
+  <link rel="stylesheet" href="css/mainstyle.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+
   <title>Connect Account</title>
 </head>
 
@@ -75,16 +77,25 @@ if (isset($_POST['submit'])) {
 
   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
     <label class="modif-label">Pseudo(ou e-mail): </label><input class="modif-input" type="text" name="login" value="<?php echo $login; ?>">
-    <span class="error">* <?php echo $loginErr; ?></span>
+    <span class="error-log">* <?php echo $loginErr; ?></span>
     <br><br>
-    <label class="modif-label">Mot de Passe:</label> <input class="modif-input" type="text" name="mdp" value="<?php echo $mdp; ?>">
-    <span class="error">* <?php echo $mdpErr; ?></span>
+    <label class="modif-label">Mot de Passe:</label> <input class="modif-input" type="password" name="mdp" value="<?php echo $mdp; ?>">
+    <span class="error-log">* <?php echo $mdpErr; ?></span>
     <br><br>
     <div class="btn-connect">
-    <input type="submit" class="btn" name="submit" value="Se Connecter">
-  </div>
+      <input type="submit" class="btn" name="submit" value="Se Connecter">
+    </div>
+    <div class="error-log">
+      <?php
+      if (isset($errorAuthent)) {
+        echo $errorAuthent;
+      }
+      ?>
+    </div>
+
   </form>
   <button type="button" class="btn exit" onclick="document.location.href='index.php'">Retour</button>
+
 </body>
 
 </html>

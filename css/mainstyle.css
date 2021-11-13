@@ -27,11 +27,27 @@
 
 html {
     scroll-behavior: smooth;
+    background-color:#8BA7A7;
+    background-image: 
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,0,0,0.8),
+      rgba(0,0,0,0.8) 200px,
+      transparent 0px,
+      transparent 300px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(0,0,0,0.5),
+      rgba(0,0,0,0.5) 200px,
+      transparent 0px,
+      transparent 300px
+    );
 }
 
 body {
-    background: var(--clr-light);
-    color: var(--clr-dark);
+    height: 98.3vh;
+    color: var(--clr-light);
     margin: 0;
     font-family: var(--ff-primary);
     font-size: var(--fw-body);
@@ -101,20 +117,24 @@ h3 {
 dt{
     font-size: var(--fs-h3);
     font-weight: var(--fw-bold);
-    max-width: 50em;
+    border-right: var(--clr-accent) solid;
+    border-left: var(--clr-accent) solid;
+    color:var(--clr-accent);
     position: unset;
-    margin-left:9em;
     padding:0.25em;
+    background-color: var(--clr-light);
+    width:90%;
 }
 dd{
     font-size: var(--fs-h3);
-    min-width: 50em;
-    max-width: 70em;
+    color:var(--clr-accent);
     border: var(--clr-accent) solid;
     display: block;
     margin-left: auto;
     margin-right: auto;
     padding: 0.2em;
+    background-color: var(--clr-light);
+    width: 90%;
     
 }
 table {
@@ -219,7 +239,7 @@ p.header{
     margin-right: auto;
 }
 .page-header--sec{
-    color: var(--clr-dark);
+    color: var(--clr-light);
     text-align: center;
     margin:1em;
 }
@@ -283,6 +303,38 @@ th{
     color: red;
     font-weight: bold;
     font-style: italic;
+
+}
+.error {
+    color: #FF0000;
+
+  }
+  .error-pwd {
+    color: #FF0000;
+    padding-left: 12em;
+  }
+  .error-log{
+    color: #FF0000;
+    padding-left: 18em;
+  }
+  .page-header-3d {
+    text-align: center;
+    margin:1em;
+    text-transform: uppercase;
+    font-family: var(--ff-primary);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--clr-light);
+    text-shadow: 1px 1px 1px var(--clr-accent),
+        1px 2px 1px var(--clr-accent),
+        1px 3px 1px var(--clr-accent),
+        1px 4px 1px var(--clr-accent),
+        1px 5px 1px var(--clr-accent),
+        1px 6px 1px var(--clr-accent),
+    1px 18px 6px var(--clr-dark),
+    1px 22px 10px var(--clr-dark),
+    1px 25px 35px var(--clr-dark),
+    1px 30px 60px var(--clr-dark);
 }
 
 hr {

@@ -178,7 +178,7 @@ if (isset($_POST['submit'])) {
       }?>
       <br><br>
       <label class="modif-label">Mot de Passe: </label><input class="modif-input" type="text" name="mdp" value="<?php echo $mdp; ?>">
-      <span class="error">* <?php echo $mdpErr; ?></span>
+      <span class="error-pwd">* <?php echo $mdpErr; ?></span>
       <br><br>
       <div class="create-btn">
       <input type="submit" class="btn" name="submit" value="<?php if (isset($_SESSION["login"])) {
