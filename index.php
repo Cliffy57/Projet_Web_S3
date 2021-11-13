@@ -18,7 +18,7 @@ $req = 'select *,DATE_FORMAT(datesujet, "%d/%m/%Y") AS datesujet from sujet,reda
 $result = $objPdo->prepare($req);
 $result->execute();
 $ch = '<table border="1">';
-$ch .= '<tr><th>Titre :</th><th>écrit le :</th><th>par :</th><th></th></tr>';
+$ch .= '<tr><th>Titre :</th><th>écrit le :</th><th>par :</th><th></th><th></th></tr>';
 // <th>Sujet</th>
 foreach ($result as $row) {
 
@@ -32,7 +32,13 @@ foreach ($result as $row) {
     if ($sujets[$row['idsujet']] > 1) {
       $lib .= 's';
     }
-    $ch .= '<td><a class="btn"href="visualiserSujet.php?id=' . urlencode($row['idsujet']) . '">' . $lib . '</a></td>';
+    $ch.='<td><a class="btn" href="visualiserSujet.php?id=' . urlencode($row['idsujet']) . '">' . $lib . '</a></td>';
+    if(isset($_SESSION["id"])){
+      if($_SESSION["id"] == $row["idredacteur"]){
+      $ch.='<td><a class="btn" href="supprimersujet.php?idsuj='.urlencode($row['idsujet']).'">Supprimer</a></td>';
+    }
+  }
+
   } else {
     $ch .= '<td><a class="btn" href="creerSujet.php?a&id=' . urlencode($row['idsujet']) . '">Ajouter Sujet</a></td>';
   }
@@ -45,22 +51,23 @@ unset($result);
 <head>
   <meta charset="utf-8">
   <title>Site de Blog</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mainstyle.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <h1>Page d'accueil</h1>
-  <h2>Liste des sujets</h2>
+  <h1 class="page-header">Page d'accueil</h1>
+  <h2 class="page-header--sec">Liste des sujets</h2>
+  <div class="button-nav">
   <?php
   $btnClass;
   $btnHref;
   $btnTxt;
   if (isset($_SESSION['login'])) {
     if ($_SESSION['login'] == true) {
-     
+
       echo ('<button type="button" class="btn create" onclick="document.location.href=\'creerSujet.php\'">Créer un sujet</button>');
       echo ('<button type="button" class="btn register" onclick="document.location.href=\'register.php\'">Modifier Compte</button>');
       echo ('<button type="button" class="btn" id="disconnect">Deconnexion</button>');
@@ -70,10 +77,11 @@ unset($result);
     echo ('<button type="button" class="btn authent" onclick="document.location.href=\'authentification.php\'">Connexion</button>');
   }
   ?>
+  </div>
   <!-- <input type="button"class="authent" onclick="document.location.href='connect.php'">S'authentifier</input> -->
-
-  <?php echo ($ch); ?>
-</body>
+  <div class="table">
+      <?php echo ($ch); ?>
+  </div>
 
 </html>
 <script type="text/javascript" src="disconnect.js"></script>

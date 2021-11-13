@@ -133,7 +133,108 @@ label {
     float: left;
     padding-right: 5px;
 }
+table{
+    color:var(--clr-accent);
+    background-color: var(--clr-light);
+    width: 60%;
+    margin:1em 1em 1em 1em;
+    margin-left: auto;
+    margin-right: auto; 
+}
+a.btn{
+    display:block;
+    margin: auto;
+    text-align:center;
+}
+.button-nav{
+    width:100%;
+    margin: 1em 0 1em 0; 
+    padding: 1em 1em 1em 1em;
+}
+.btn-connect{
+     position: absolute;
+     right: 45%;
+}
+button.btn.exit{
+    margin-left: 10em;
+}
+button.btn.retour{
+    margin-left:10px;
+    width:15em;
+}
+p.header{
+    padding: 1em 1em 1em 1em;
+    font-weight : var(--fw-reg);
+    font-family : var(--ff-primary);
+    font-size : var(--fs-body)
+}
+.page-header{
+    padding: 0.2em 1em 0.2em 1em;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.page-header--sec{
+    color: var(--clr-dark);
+    text-align: center;
+    margin:1em;
+}
+.create-sujet{
+    margin: 0.5em;
+    padding : 1em;
+}
+.modif-label{
+    width:49%;
+    float:left;
+    text-align:right;
+  }
+.modif-input{
+    float:right;
+    width:auto;
+    position: relative;
+    right:44.5em
+  }
 
+form.creation{
+    height: 40em;
+}
+textarea.create-sujet{
+    width: 50em;
+    height:15em;
+}
+div.wrapper{
+    text-align:center;
+    width: 100%;
+    font-size: var(--fs-body);
+}
+textarea{
+    resize: none;
+    outline: var(--clr-accent);
+   width: fit-content;
+   height: 10em;
+   padding: 0.2em 0.2em 0.2em 0.2em;
+
+}
+input#deleteaccount.btn{
+    transition: auto;
+    display: flex;
+    flex-direction: row;
+    float: right;
+    width: 20em;
+    position: absolute;
+    left:86%;
+}
+button#disconnect.btn{
+    transition: auto;
+    display: flex;
+    flex-direction: row;
+    float: right;
+    width: 15em;
+}
+th{
+    color:var(--clr-light);
+    background-color: var(--clr-accent)
+}
 .erreur {
     color: red;
     font-weight: bold;

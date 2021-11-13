@@ -12,7 +12,7 @@ if (isset($_GET['id'])) {
 <head>
   <meta charset="utf-8">
   <title>Sujet</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mainstyle.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@ if (isset($_GET['id'])) {
       <dt>Titre :</dt>
       <dd><?php
           // echo ($_GET["id"]);
-          $result = $objPdo->query('SELECT *,DATE_FORMAT(datesujet, "%d/%m /%Y") AS datesujetjour,DATE_FORMAT(datesujet, "%h:%i:%s") AS datesujetheure FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet=' . $_GET["id"] . '');
+          $result = $objPdo->query('SELECT *,DATE_FORMAT(datesujet, "%d/%m /%Y") AS datesujetjour,DATE_FORMAT(datesujet, "%H:%i:%s") AS datesujetheure FROM sujet, redacteur WHERE sujet.idredacteur=redacteur.idredacteur AND idsujet=' . $_GET["id"] . '');
           while ($row = $result->fetch()) {
             echo $row['titresujet'] . "</br>";
             // $date = strtotime($row['datesujet']);
@@ -119,7 +119,7 @@ if (isset($_GET['id'])) {
     foreach ($result as $row) {
       $sujets[$row['idreponse']] = $row['nb'];
     }
-    $req = 'select *,DATE_FORMAT(daterep, "%d/%m/%Y à %h:%i:%s") AS daterep from reponse,redacteur where idsujet =' . $_GET["id"] . ' and reponse.idredacteur=redacteur.idredacteur order by daterep DESC ';
+    $req = 'select *,DATE_FORMAT(daterep, "%d/%m/%Y à %H:%i:%s") AS daterep from reponse,redacteur where idsujet =' . $_GET["id"] . ' and reponse.idredacteur=redacteur.idredacteur order by daterep DESC ';
     $result = $objPdo->prepare($req);
     $result->execute();
     // $reponseur ='select pseudo from redacteur where redacteur.idredacteur=:idredacteur';

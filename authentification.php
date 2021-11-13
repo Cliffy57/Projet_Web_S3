@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('header.php');
 require_once "config.php";
 
 // define variables and set to empty values
@@ -54,7 +55,7 @@ if (isset($_POST['submit'])) {
 <html>
 
 <head>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/mainstyle.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
@@ -70,16 +71,18 @@ if (isset($_POST['submit'])) {
 
 
 
-  <h2>Connexion a un compte de redacteur</h2>
+  <h2 class="page-header--sec">Connexion a un compte de redacteur</h2>
 
   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-    Pseudo(ou e-mail): <input type="text" name="login" value="<?php echo $login; ?>">
+    <label class="modif-label">Pseudo(ou e-mail): </label><input class="modif-input" type="text" name="login" value="<?php echo $login; ?>">
     <span class="error">* <?php echo $loginErr; ?></span>
     <br><br>
-    Mot de Passe: <input type="text" name="mdp" value="<?php echo $mdp; ?>">
+    <label class="modif-label">Mot de Passe:</label> <input class="modif-input" type="text" name="mdp" value="<?php echo $mdp; ?>">
     <span class="error">* <?php echo $mdpErr; ?></span>
     <br><br>
+    <div class="btn-connect">
     <input type="submit" class="btn" name="submit" value="Se Connecter">
+  </div>
   </form>
   <button type="button" class="btn exit" onclick="document.location.href='index.php'">Retour</button>
 </body>

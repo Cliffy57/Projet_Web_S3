@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mainstyle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
@@ -93,16 +93,14 @@ if (isset($_POST['submit'])) {
     <div class="wrapper">
       <h2>Creation d'un Sujet</h2>
       <p>Remplissez ce formulaire afin de creer votre sujet.</p>
-      <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <div>
-          <label>Titre du sujet:</label>
-          <input type="text" name="titresujet" value='<?php echo $titresujet; ?>'></input>
+      <form class="creation"method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <div class=create-sujet>
+          <input type="text" name="titresujet" placeholder="Titre du sujet" cols="1" rows="1"value='<?php echo $titresujet; ?>'></input>
           <span class="erreur"><?php echo $titresujetErr; ?></span>
         </div>
         <?php echo $textesujet?>
-        <div>
-          <label>Texte de votre sujet:</label>
-          <textarea name="textesujet" maxlength="900" value='<?php echo $textesujet; ?>'></textarea>
+        <div class=create-sujet>
+          <textarea class="create-sujet"name="textesujet" maxlength="900" placeholder="Texte de votre sujet" cols="30" rows="5" value='<?php echo $textesujet; ?>'></textarea>
           <span class="erreur"><?php echo $textesujetErr; ?></span>
         </div>
 
