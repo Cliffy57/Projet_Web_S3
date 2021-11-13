@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
   <?php
   require_once('config.php');
-
+ 
   if (isset($_SESSION['login'])) {
     if ($_SESSION['login'] == true) {
       // echo ($_SESSION['id'].' is user: ');
