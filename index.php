@@ -37,6 +37,9 @@ foreach ($result as $row) {
       if($_SESSION["id"] == $row["idredacteur"]){
       $ch.='<td><a class="btn" href="supprimersujet.php?idsuj='.urlencode($row['idsujet']).'">Supprimer</a></td>';
     }
+    else{
+      $ch.='<td></td>';
+    }
   }
 
   } else {

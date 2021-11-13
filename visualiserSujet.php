@@ -19,7 +19,7 @@ if (isset($_GET['id'])) {
 </head>
 
 <body>
-  <h1>Voici le sujet:</h1>
+  <h1 class="page-header">Voici le sujet:</h1>
   <div class="sujet">
     <dl>
       <dt>Titre :</dt>
@@ -40,21 +40,7 @@ if (isset($_GET['id'])) {
           ?></dd>
     </dl>
   </div>
-  <h3><?php 
-    $count_stmt = $objPdo->prepare('SELECT COUNT("idreponse") AS nbrep FROM reponse WHERE reponse.idsujet=:idsujet');
-    $count_stmt->bindValue("idsujet",  $_GET['id'], PDO::PARAM_STR);
-    $count_stmt->execute();
-    while ($row = $count_stmt->fetch()) {
-      if($row['nbrep']<2){
-        echo $row['nbrep'].' réponse';
-      }else{
-        echo $row['nbrep'].' réponses';
-      }
-   
 
-    }
-    ?>
-    </h3>
   <div class="reponses">
     <!-- Commenter -->
     <?php
@@ -95,20 +81,41 @@ if (isset($_GET['id'])) {
           ////////////////////////////////
         }
       }
-      echo ('<form method="post" action="" >
+      echo ('<form class="form-com" method="post" action="" >
 
-        <div>
-                    <label>Contenu de votre commentaire:</label>
-                    <textarea name="textecom" maxlength="400" value="<?php echo $textecom;?>"></textarea>
+        <div="commmentaire">
+                    <textarea name="textecom"  class="text-com" placeholder="Contenu de votre commentaire." cols="1" rows="1" maxlength="400" value="<?php echo $textecom;?>"></textarea>
                     <span class="erreur"><?php echo $textecomErr ;?></span>
-                </div>
-              
-          <input type="submit" class="btn" name="submit" value="Commenter">
+                
+                    </div>       
+          <input type="submit" class="btn" name="submit" value="Commenter"style="
+          width: 20em;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 1em;
+      ">
+          
+        
+          
         </form>');
     }
 
 
     ?>
+    <h3 class="nbcom"><?php
+                    $count_stmt = $objPdo->prepare('SELECT COUNT("idreponse") AS nbrep FROM reponse WHERE reponse.idsujet=:idsujet');
+                    $count_stmt->bindValue("idsujet",  $_GET['id'], PDO::PARAM_STR);
+                    $count_stmt->execute();
+                    while ($row = $count_stmt->fetch()) {
+                      if ($row['nbrep'] < 2) {
+                        echo $row['nbrep'] . ' réponse';
+                      } else {
+                        echo $row['nbrep'] . ' réponses';
+                      }
+                    }
+                    ?>
+  </h3>
     <!-- Lecture des commentaires -->
     <?php
     require_once('config.php');
@@ -136,6 +143,9 @@ if (isset($_GET['id'])) {
         if ($_SESSION['login'] == true) {
           if ($_SESSION['id'] == $row['idredacteur']) {
             $ch .= '<form method="post" action="supprimerrep.php?a&id=' . urlencode($_GET['id']) . '&idrep=' . urlencode($row['idreponse']) . '"><td><input type="submit" class="btn" name="delete" value="Supprimer"></td></form>';
+          }
+          else{
+            $ch .= '<td></td></form>';
           }
         }
       }

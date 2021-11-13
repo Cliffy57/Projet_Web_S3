@@ -98,7 +98,25 @@ h2 {
 h3 {
     font-size: var(--fs-h3);
 }
-
+dt{
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-bold);
+    max-width: 50em;
+    position: unset;
+    margin-left:9em;
+    padding:0.25em;
+}
+dd{
+    font-size: var(--fs-h3);
+    min-width: 50em;
+    max-width: 70em;
+    border: var(--clr-accent) solid;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.2em;
+    
+}
 table {
     font-size: 14px;
     background: #fefefe;
@@ -119,6 +137,9 @@ td {
     border-right: 1px solid #F2F2F2;
     border-bottom: 1px solid #EDE9E9;
 }
+tr:nth-child(even) {background-color: var(--clr-light);
+                    color: var(--clr-dark);
+}
 
 th {
     background: #f0f0f0;
@@ -134,8 +155,8 @@ label {
     padding-right: 5px;
 }
 table{
-    color:var(--clr-accent);
-    background-color: var(--clr-light);
+    color:var(--clr-light);
+    background-color: var(--clr-dark);
     width: 60%;
     margin:1em 1em 1em 1em;
     margin-left: auto;
@@ -155,12 +176,35 @@ a.btn{
      position: absolute;
      right: 45%;
 }
+
+.nbcom{
+    padding-left:20em;
+}
+
+.text-com{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:25em;
+    height:10em;
+}
 button.btn.exit{
     margin-left: 10em;
+    overflow: hidden;
+    position: fixed;
+    top:65em;
+    bottom:3px;
+    width: 15em;
+    height: 3em;
 }
 button.btn.retour{
     margin-left:10px;
     width:15em;
+}
+div.button-nav{
+    width:1180px;
+    margin-left: auto;
+    margin-right: auto;
 }
 p.header{
     padding: 1em 1em 1em 1em;
@@ -222,7 +266,7 @@ input#deleteaccount.btn{
     float: right;
     width: 20em;
     position: absolute;
-    left:86%;
+    left:70%;
 }
 button#disconnect.btn{
     transition: auto;
